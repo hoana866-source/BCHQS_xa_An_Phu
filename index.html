@@ -4,14 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1f6feb">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
-<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Công việc KPI">
-<title>Theo dõi công việc & KPI</title>
+<title>BCHQS xã An Phú</title>
 <style>
 :root{--bg:#f4f5f7;--card:#fff;--tx:#1d2330;--mut:#6b7280;--bd:#e3e6eb;--pri:#1f6feb;--ok:#18864b;--warn:#b7791f;--bad:#c53030;--early:#0e7490;--in:#fff}
 @media (prefers-color-scheme:dark){:root{--bg:#121417;--card:#1c1f24;--tx:#e8eaed;--mut:#9aa1ab;--bd:#2f343b;--pri:#4c8dff;--ok:#3fb27f;--warn:#e0a84a;--bad:#f06363;--early:#38b2c9;--in:#15181c}}
@@ -96,7 +89,7 @@ ul{padding-left:20px;margin:6px 0}
 </style>
 </head>
 <body>
-<header><h1>📋 Công việc & KPI</h1><div class="who" id="who"></div></header>
+<header><h1>📋 BCHQS XÃ AN PHÚ</h1><div class="who" id="who"></div></header>
 <main id="main"></main>
 <nav id="nav"></nav>
 
@@ -618,7 +611,7 @@ function renderSet(){
     <p class="mut">Dữ liệu nằm trong trình duyệt của máy này. Nếu xoá dữ liệu trình duyệt hoặc xoá ứng dụng thì sẽ mất, nên hãy xuất file định kỳ ở tab Đồng bộ.</p>
     <label>Khôi phục từ file (thay thế toàn bộ dữ liệu hiện tại)<input type="file" id="c_rest" accept=".json,application/json"></label>
     <button class="btn bad" onclick="wipe()">Xoá toàn bộ dữ liệu trên máy này</button></div>
-  <div class="card mut">Theo dõi công việc & KPI · chạy hoàn toàn offline · dữ liệu không gửi đi đâu.</div>`;
+  <div class="card mut">Theo dõi công việc & KPI của BCHQS xã An Phú</div>`;
   $('#c_rest').onchange=e=>readJson(e.target,f=>{
     const msg=f.me.id===db.me.id?'Khôi phục toàn bộ dữ liệu từ file sao lưu này? Dữ liệu hiện tại sẽ bị thay thế.':`File này là của "${f.me.name}", không phải của máy này. Khôi phục sẽ biến máy này thành "${f.me.name}". Bạn chắc chắn chứ? (Muốn gộp dữ liệu thì dùng tab Đồng bộ.)`;
     if(confirm(msg)){try{localStorage.setItem(KU,JSON.stringify(db))}catch(x){}restoreFrom(f);render();toast('Đã khôi phục')}
@@ -634,11 +627,6 @@ if(typeof document!=='undefined'&&document.getElementById('main')){
   if(db){db.settings=Object.assign(defSettings(),db.settings||{});db.aliases=db.aliases||{};db.lastImportFrom=db.lastImportFrom||{};db.peers=db.peers||{}}
   try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
   render();
-  if('serviceWorker' in navigator&&location.protocol.startsWith('http')){
-    navigator.serviceWorker.register('sw.js').then(reg=>{
-      reg.addEventListener('updatefound',()=>{const w=reg.installing;w&&w.addEventListener('statechange',()=>{if(w.state==='installed'&&navigator.serviceWorker.controller)toast('Đã có bản cập nhật mới. Đóng hẳn app rồi mở lại để dùng bản mới.',6000)})});
-    }).catch(()=>{});
-  }
 }
 </script>
 </body>
