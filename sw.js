@@ -1,5 +1,5 @@
 // Mỗi lần sửa app: tăng số phiên bản này để điện thoại tải bản mới.
-const VERSION = 'kpi-v1';
+const VERSION = 'kpi-v2';
 const FILES = ['./', './index.html', './manifest.webmanifest',
   './icons/icon-192.png', './icons/icon-512.png', './icons/icon-maskable-512.png', './icons/apple-touch-icon.png'];
 
