@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1f6feb">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Công việc KPI">
+<title>Theo dõi công việc & KPI</title>
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--tx:#1d2330;--mut:#6b7280;--bd:#e3e6eb;--pri:#1f6feb;--ok:#18864b;--warn:#b7791f;--bad:#c53030;--early:#0e7490;--in:#fff}
+@media (prefers-color-scheme:dark){:root{--bg:#121417;--card:#1c1f24;--tx:#e8eaed;--mut:#9aa1ab;--bd:#2f343b;--pri:#4c8dff;--ok:#3fb27f;--warn:#e0a84a;--bad:#f06363;--early:#38b2c9;--in:#15181c}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--tx);font-size:15px;padding-bottom:calc(70px + env(safe-area-inset-bottom))}
+header{position:sticky;top:0;z-index:5;background:var(--card);border-bottom:1px solid var(--bd);padding:10px 14px;padding-top:calc(10px + env(safe-area-inset-top));display:flex;align-items:center;gap:10px}
+header h1{font-size:17px;margin:0;flex:1}
+.who{font-size:12px;color:var(--mut);text-align:right}
+main{max-width:1000px;margin:0 auto;padding:12px}
+nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--bd);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom);z-index:6}
+nav button{flex:1;max-width:160px;border:0;background:none;padding:7px 2px 8px;font-size:12px;color:var(--mut);display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer}
+nav button .i{font-size:20px;line-height:1.2}
+nav button.on{color:var(--pri);font-weight:600}
+h2{font-size:18px;margin:0 0 12px}
+h3{font-size:16px;margin:0 0 8px}
+h4{font-size:14px;margin:14px 0 6px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px 14px;margin-bottom:10px}
+.card.hl{border:2px solid var(--pri)}
+.mut{color:var(--mut);font-size:13px}
+.sp{flex:1}
+.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:8px 0 12px}
+.btn{border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:9px;padding:9px 14px;font-size:14px;cursor:pointer;font-family:inherit}
+.btn:active{transform:scale(.98)}
+.btn.pri{background:var(--pri);border-color:var(--pri);color:#fff;font-weight:600}
+.btn.bad{color:var(--bad);border-color:var(--bad)}
+.btn.sm{padding:6px 10px;font-size:13px}
+input,select,textarea{font:inherit;font-size:16px;color:var(--tx);background:var(--in);border:1px solid var(--bd);border-radius:9px;padding:9px 10px;width:100%}
+textarea{resize:vertical}
+label{display:block;font-size:13px;color:var(--mut);margin-bottom:10px}
+label>input,label>select,label>textarea{margin-top:4px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
+.inl{display:flex;gap:6px;margin-top:4px}
+.inl input{flex:1}
+.filters{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px}
+.filters input{grid-column:1/-1}
+@media(min-width:760px){.filters{grid-template-columns:2fr 1fr 1fr 1fr}.filters input{grid-column:auto}}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.chip{border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:20px;padding:6px 12px;font-size:13px;cursor:pointer;font-family:inherit}
+.chip.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.chip.c-bad b{color:var(--bad)}.chip.c-warn b{color:var(--warn)}
+.chip.on b{color:#fff!important}
+.task{border-left:4px solid var(--bd);cursor:pointer}
+.task.st-overdue,.task.st-late{border-left-color:var(--bad)}
+.task.st-soon{border-left-color:var(--warn)}
+.task.st-early{border-left-color:var(--early)}
+.task.st-ontime,.task.st-done{border-left-color:var(--ok)}
+.task.st-doing{border-left-color:var(--pri)}
+.row1{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:5px}
+.ttl{font-weight:600;margin-bottom:4px;white-space:pre-wrap;word-break:break-word}
+.badge{display:inline-block;font-size:12px;padding:2px 8px;border-radius:10px;font-weight:600;background:rgba(127,127,127,.12)}
+.b-overdue,.b-late{background:rgba(197,48,48,.13);color:var(--bad)}
+.b-soon{background:rgba(183,121,31,.15);color:var(--warn)}
+.b-early{background:rgba(14,116,144,.13);color:var(--early)}
+.b-ontime,.b-done{background:rgba(24,134,75,.13);color:var(--ok)}
+.b-doing{background:rgba(31,111,235,.12);color:var(--pri)}
+.q-tot{background:rgba(24,134,75,.13);color:var(--ok)}
+.q-dat{background:rgba(31,111,235,.12);color:var(--pri)}
+.q-kem{background:rgba(197,48,48,.13);color:var(--bad)}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--bd);border-radius:12px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{padding:8px 9px;border-bottom:1px solid var(--bd);text-align:right;white-space:nowrap}
+th{background:rgba(127,127,127,.08);font-weight:600}
+th:first-child,td:first-child{text-align:left;position:sticky;left:0;background:var(--card)}
+th:first-child{background:var(--card)}
+tr.tot td{font-weight:700}
+.score{font-weight:700}
+.staff-row{display:flex;align-items:center;gap:8px;cursor:pointer}
+.staff-row .nm{font-weight:600}
+.mbg{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:20;display:flex;align-items:flex-end;justify-content:center}
+.modal{background:var(--card);width:100%;max-width:580px;max-height:92vh;overflow:auto;border-radius:16px 16px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom))}
+@media(min-width:640px){.mbg{align-items:center}.modal{border-radius:16px}}
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translateX(-50%);background:#222;color:#fff;padding:10px 16px;border-radius:10px;font-size:14px;z-index:30;max-width:90vw;text-align:center;box-shadow:0 4px 16px rgba(0,0,0,.3)}
+.chk{display:flex;gap:8px;align-items:flex-start;color:var(--tx);font-size:14px}
+.chk input{width:auto;margin-top:3px}
+.cf{border:1px solid var(--bd);border-radius:10px;padding:8px 10px;margin-bottom:8px}
+.cf .chk{margin:4px 0}
+.code{font-family:ui-monospace,Consolas,monospace;font-size:16px;font-weight:700;letter-spacing:1px;color:var(--pri)}
+ul{padding-left:20px;margin:6px 0}
+.empty{text-align:center;color:var(--mut);padding:30px 10px}
+.help li{margin-bottom:4px}
+</style>
+</head>
+<body>
+<header><h1>📋 Công việc & KPI</h1><div class="who" id="who"></div></header>
+<main id="main"></main>
+<nav id="nav"></nav>
+
+<script>
+"use strict";
+/* ================== TIỆN ÍCH ================== */
+const K='kpi_tracker_v1', KU=K+'_undo';
+let db=null, tab='tasks', kpiP=null, imp=null;
+const ui={q:'',staff:'',st:'open',asg:''};
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,9);
+const pad=n=>String(n).padStart(2,'0');
+const iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const today=()=>iso(new Date());
+const fmtD=s=>s?s.slice(8,10)+'/'+s.slice(5,7)+'/'+s.slice(0,4):'';
+const fmtT=t=>{if(!t)return '';const d=new Date(t);return pad(d.getHours())+':'+pad(d.getMinutes())+' '+fmtD(iso(d))};
+const dayDiff=(a,b)=>Math.round((new Date(b+'T00:00:00')-new Date(a+'T00:00:00'))/864e5);
+const norm=s=>String(s||'').trim().toLowerCase().replace(/\s+/g,' ');
+const slug=s=>String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/đ/g,'d').replace(/Đ/g,'D').replace(/[^\w]+/g,'_').replace(/^_|_$/g,'')||'user';
+const clone=o=>JSON.parse(JSON.stringify(o));
+const defSettings=()=>({latePenalty:10,qTot:100,qDat:80,qKem:50});
+
+function toast(msg,ms=2600){const t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),ms)}
+function load(){try{const s=localStorage.getItem(K);if(s)return JSON.parse(s)}catch(e){}return null}
+function save(){try{localStorage.setItem(K,JSON.stringify(db))}catch(e){toast('⚠ Không lưu được dữ liệu! Hãy xuất file sao lưu ngay.',5000)}}
+
+/* ================== BẢN GHI (mỗi trường có v,t,d) ================== */
+const V=(r,k)=>{const e=r&&r.f&&r.f[k];return e?e.v:''};
+function mk(obj){const r={id:uid(),f:{}},t=Date.now();for(const k in obj)r.f[k]={v:obj[k],t,d:db.me.id};return r}
+function setF(r,k,v){const e=r.f[k];if(e&&e.v===v)return false;if(!e&&(v===''||v===false))return false;r.f[k]={v,t:Date.now(),d:db.me.id};return true}
+function canon(id,al){al=al||db.aliases;let x=id,n=0;while(x&&al[x]&&n++<50)x=al[x];return x||''}
+const staffOf=id=>id?db.staff[canon(id)]:null;
+const live=o=>Object.values(o).filter(r=>!V(r,'deleted'));
+function lastEdit(r){let b=null;for(const k in r.f){const e=r.f[k];if(!b||e.t>b.t)b=e}return b?`Sửa lần cuối: ${esc(db.peers[b.d]||'?')} lúc ${fmtT(b.t)}`:''}
+function assigners(){const s=new Set(Object.values(db.peers));s.add(db.me.name);live(db.tasks).forEach(t=>{const a=V(t,'assigner');if(a)s.add(a)});return [...s].sort((a,b)=>a.localeCompare(b,'vi'))}
+
+function staffTree(){
+  const list=live(db.staff).sort((a,b)=>V(a,'name').localeCompare(V(b,'name'),'vi'));
+  const ids=new Set(list.map(r=>r.id)),kids={},roots=[];
+  for(const r of list){const p=canon(V(r,'parent'));if(p&&ids.has(p)&&p!==r.id)(kids[p]=kids[p]||[]).push(r);else roots.push(r)}
+  const out=[],seen=new Set();
+  const walk=(r,lv)=>{if(seen.has(r.id))return;seen.add(r.id);out.push({r,lv});(kids[r.id]||[]).forEach(c=>walk(c,lv+1))};
+  roots.forEach(r=>walk(r,0));list.forEach(r=>{if(!seen.has(r.id))walk(r,0)});
+  return out;
+}
+const staffName=id=>{const s=staffOf(id);return s?V(s,'name'):''};
+
+/* ================== TRẠNG THÁI & KPI ================== */
+function status(t){
+  const due=V(t,'due'),done=V(t,'done');
+  if(done){
+    if(!due)return {k:'done',label:'Hoàn thành',d:0};
+    const d=dayDiff(due,done);
+    if(d<0)return {k:'early',label:`Xong sớm ${-d} ngày`,d};
+    if(d===0)return {k:'ontime',label:'Xong đúng hạn',d};
+    return {k:'late',label:`Xong trễ ${d} ngày`,d};
+  }
+  if(!due)return {k:'doing',label:'Đang làm (chưa đặt hạn)'};
+  const d=dayDiff(today(),due);
+  if(d<0)return {k:'overdue',label:`Quá hạn ${-d} ngày`,d:-d};
+  if(d<=2)return {k:'soon',label:d===0?'Hạn hôm nay':`Còn ${d} ngày`};
+  return {k:'doing',label:`Còn ${d} ngày`};
+}
+function taskScore(t){
+  const s=status(t),S=db.settings;
+  if(!V(t,'done'))return s.k==='overdue'?0:null;
+  const base=s.k==='late'?Math.max(0,100-S.latePenalty*s.d):100;
+  const q=V(t,'quality');const w=q==='Tốt'?S.qTot:q==='Đạt'?S.qDat:q==='Kém'?S.qKem:100;
+  return base*w/100;
+}
+const rank=s=>s===null?'':s>=90?'Xuất sắc':s>=75?'Tốt':s>=50?'Đạt':'Chưa đạt';
+function inPeriod(t,from,to){const ref=V(t,'due')||V(t,'start');return ref&&ref>=from&&ref<=to}
+function computeKPI(from,to){
+  const R={};
+  for(const t of live(db.tasks)){
+    if(!inPeriod(t,from,to))continue;
+    const sid=canon(V(t,'staff'))||'_';
+    const r=R[sid]||(R[sid]={sid,total:0,done:0,early:0,ontime:0,late:0,overdue:0,open:0,dev:0,devN:0,tot:0,dat:0,kem:0,sc:0,scN:0});
+    r.total++;const s=status(t);
+    if(V(t,'done')){r.done++;if(s.k==='early')r.early++;else if(s.k==='late')r.late++;else r.ontime++;if(V(t,'due')){r.dev+=s.d;r.devN++}}
+    else if(s.k==='overdue')r.overdue++;else r.open++;
+    const q=V(t,'quality');if(q==='Tốt')r.tot++;else if(q==='Đạt')r.dat++;else if(q==='Kém')r.kem++;
+    const sc=taskScore(t);if(sc!==null){r.sc+=sc;r.scN++}
+  }
+  return Object.values(R).map(fin).sort((a,b)=>(b.score??-1)-(a.score??-1));
+}
+function fin(r){return {...r,avgDev:r.devN?r.dev/r.devN:null,score:r.scN?r.sc/r.scN:null,onRate:r.done?(r.early+r.ontime)/r.done:null}}
+function sumKPI(rows){const z={sid:'ALL',total:0,done:0,early:0,ontime:0,late:0,overdue:0,open:0,dev:0,devN:0,tot:0,dat:0,kem:0,sc:0,scN:0};rows.forEach(r=>{for(const k in z)if(k!=='sid')z[k]+=r[k]});return fin(z)}
+function periodPreset(p){
+  const d=new Date(),y=d.getFullYear(),m=d.getMonth();let a,b;
+  if(p==='pm'){a=new Date(y,m-1,1);b=new Date(y,m,0)}
+  else if(p==='q'){const q=Math.floor(m/3)*3;a=new Date(y,q,1);b=new Date(y,q+3,0)}
+  else if(p==='y'){a=new Date(y,0,1);b=new Date(y,11,31)}
+  else{a=new Date(y,m,1);b=new Date(y,m+1,0)}
+  return {from:iso(a),to:iso(b),p};
+}
+
+/* ================== GỘP DỮ LIỆU ================== */
+function mergeByT(a,b){for(const k in b.f){if(!a.f[k]||b.f[k].t>a.f[k].t)a.f[k]=b.f[k]}}
+function doMerge(file,choices){
+  const w=clone(db),me=w.me.id,peer=file.me.id;
+  const myLast=w.lastImportFrom[peer]||0,theirLast=(file.lastImportFrom||{})[me]||0;
+  const T=Date.now(),conflicts=[],dups=[],st={ns:0,us:0,nt:0,ut:0};
+  // 1) gộp bảng bí danh (nhân viên đã được gộp)
+  for(const [a,b] of Object.entries(file.aliases||{})){if(!w.aliases[a]&&canon(b,w.aliases)!==a)w.aliases[a]=b}
+  for(const key of Object.keys(w.staff)){const c=canon(key,w.aliases);if(c!==key){const L=w.staff[key];delete w.staff[key];L.id=c;if(w.staff[c])mergeByT(w.staff[c],L);else w.staff[c]=L}}
+  const mergeRec=(type,L,R)=>{
+    let ch=false;
+    for(const k in R.f){
+      const l=L.f[k],r=R.f[k];
+      if(!l){L.f[k]=r;ch=true;continue}
+      if(JSON.stringify(l.v)===JSON.stringify(r.v)){if(r.t>l.t)L.f[k]=r;continue}
+      const lU=l.d===me&&l.t>theirLast, rU=r.d===peer&&r.t>myLast;
+      if(lU&&rU){
+        const key=type+':'+L.id+':'+k;
+        const c=choices[key]||(r.t>l.t?'them':'me');
+        conflicts.push({key,type,id:L.id,k,l,r,c});
+        L.f[k]={v:c==='them'?r.v:l.v,t:T,d:me};ch=true;
+      }else if(rU||(!lU&&r.t>l.t)){L.f[k]=r;ch=true}
+    }
+    return ch;
+  };
+  // 2) nhân viên
+  const rset=new Set(Object.keys(file.staff||{}).map(id=>canon(id,w.aliases)));
+  for(const R0 of Object.values(file.staff||{})){
+    const R=clone(R0);const rid=canon(R.id,w.aliases);R.id=rid;
+    if(w.staff[rid]){if(mergeRec('s',w.staff[rid],R))st.us++;continue}
+    const nm=norm(V(R,'name'));
+    const L=nm&&!V(R,'deleted')?Object.values(w.staff).find(x=>!V(x,'deleted')&&norm(V(x,'name'))===nm&&!rset.has(x.id)):null;
+    if(L){
+      const key='dup:'+rid+':'+L.id,ok=choices[key]!==false;
+      dups.push({key,name:V(R,'name'),lpos:V(L,'pos'),rpos:V(R,'pos'),ok});
+      if(ok){
+        if(rid<L.id){delete w.staff[L.id];w.aliases[L.id]=rid;L.id=rid;w.staff[rid]=L}
+        else{w.aliases[rid]=L.id;R.id=L.id}
+        rset.add(L.id);mergeRec('s',w.staff[L.id],R);st.us++;continue;
+      }
+    }
+    w.staff[rid]=R;st.ns++;
+  }
+  // 3) công việc
+  for(const R0 of Object.values(file.tasks||{})){
+    const R=clone(R0),L=w.tasks[R.id];
+    if(L){if(mergeRec('t',L,R))st.ut++}else{w.tasks[R.id]=R;st.nt++}
+  }
+  for(const [id,n] of Object.entries(file.peers||{}))if(id!==me)w.peers[id]=n;
+  w.peers[peer]=file.me.name;
+  w.lastImportFrom[peer]=Math.max(w.lastImportFrom[peer]||0,file.exportedAt||0);
+  w.log=w.log||[];w.log.unshift({at:T,name:file.me.name,fileAt:file.exportedAt,st,cf:conflicts.length});w.log=w.log.slice(0,30);
+  return {w,conflicts,dups,st};
+}
+function dataHash(d){
+  d=d||db;const parts=[];
+  for(const typ of ['staff','tasks']){const o=d[typ];Object.keys(o).sort().forEach(id=>{const r=o[id];parts.push(typ[0]+id+'|'+Object.keys(r.f).sort().map(k=>k+'='+JSON.stringify(r.f[k].v)).join('|'))})}
+  let h=0x811c9dc5;const s=parts.join('\n');
+  for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,0x01000193)>>>0}
+  return h.toString(16).toUpperCase().padStart(8,'0');
+}
+
+/* ================== XUẤT FILE / EXCEL ================== */
+async function deliver(blob,name,share){
+  if(share&&navigator.canShare){
+    try{const f=new File([blob],name,{type:blob.type});if(navigator.canShare({files:[f]})){await navigator.share({files:[f],title:name});return true}}
+    catch(e){if(e&&e.name==='AbortError')return false}
+  }
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500);return true;
+}
+const CRC=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+function crc32(b){let c=0xFFFFFFFF;for(let i=0;i<b.length;i++)c=CRC[(c^b[i])&255]^(c>>>8);return (c^0xFFFFFFFF)>>>0}
+function zipStore(files,type){
+  const enc=new TextEncoder(),parts=[],cen=[];let off=0;
+  for(const f of files){
+    const nb=enc.encode(f.name),data=typeof f.data==='string'?enc.encode(f.data):f.data,crc=crc32(data),sz=data.length;
+    const lh=new Uint8Array(30+nb.length),dv=new DataView(lh.buffer);
+    dv.setUint32(0,0x04034b50,true);dv.setUint16(4,20,true);dv.setUint16(6,0x0800,true);dv.setUint16(8,0,true);dv.setUint16(10,0,true);dv.setUint16(12,0x21,true);
+    dv.setUint32(14,crc,true);dv.setUint32(18,sz,true);dv.setUint32(22,sz,true);dv.setUint16(26,nb.length,true);dv.setUint16(28,0,true);lh.set(nb,30);
+    parts.push(lh,data);
+    const ch=new Uint8Array(46+nb.length),cv=new DataView(ch.buffer);
+    cv.setUint32(0,0x02014b50,true);cv.setUint16(4,20,true);cv.setUint16(6,20,true);cv.setUint16(8,0x0800,true);cv.setUint16(10,0,true);cv.setUint16(12,0,true);cv.setUint16(14,0x21,true);
+    cv.setUint32(16,crc,true);cv.setUint32(20,sz,true);cv.setUint32(24,sz,true);cv.setUint16(28,nb.length,true);cv.setUint32(42,off,true);ch.set(nb,46);
+    cen.push(ch);off+=lh.length+sz;
+  }
+  const cs=cen.reduce((a,b)=>a+b.length,0),end=new Uint8Array(22),ev=new DataView(end.buffer);
+  ev.setUint32(0,0x06054b50,true);ev.setUint16(8,files.length,true);ev.setUint16(10,files.length,true);ev.setUint32(12,cs,true);ev.setUint32(16,off,true);
+  return new Blob([...parts,...cen,end],{type});
+}
+const colL=i=>{let s='';i++;while(i>0){const m=(i-1)%26;s=String.fromCharCode(65+m)+s;i=Math.floor((i-1)/26)}return s};
+const xe=s=>String(s).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g,'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function sheetXml(sh){
+  let x='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">';
+  if(sh.widths)x+='<cols>'+sh.widths.map((w,i)=>`<col min="${i+1}" max="${i+1}" width="${w}" customWidth="1"/>`).join('')+'</cols>';
+  x+='<sheetData>';
+  sh.rows.forEach((row,ri)=>{
+    x+=`<row r="${ri+1}">`;const s=(sh.bold||[]).includes(ri)?' s="1"':'';
+    row.forEach((v,ci)=>{
+      if(v===null||v===undefined||v==='')return;const ref=colL(ci)+(ri+1);
+      if(typeof v==='number'&&isFinite(v))x+=`<c r="${ref}"${s}><v>${v}</v></c>`;
+      else x+=`<c r="${ref}" t="inlineStr"${s}><is><t xml:space="preserve">${xe(v)}</t></is></c>`;
+    });x+='</row>';
+  });
+  return x+'</sheetData></worksheet>';
+}
+function makeXlsx(sheets){
+  const N='http://schemas.openxmlformats.org',files=[];
+  files.push({name:'[Content_Types].xml',data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="${N}/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>${sheets.map((s,i)=>`<Override PartName="/xl/worksheets/sheet${i+1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join('')}</Types>`});
+  files.push({name:'_rels/.rels',data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="${N}/package/2006/relationships"><Relationship Id="rId1" Type="${N}/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>`});
+  files.push({name:'xl/workbook.xml',data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="${N}/spreadsheetml/2006/main" xmlns:r="${N}/officeDocument/2006/relationships"><sheets>${sheets.map((s,i)=>`<sheet name="${xe(s.name.replace(/[\[\]:*?\/\\]/g,' ').slice(0,31))}" sheetId="${i+1}" r:id="rId${i+1}"/>`).join('')}</sheets></workbook>`});
+  files.push({name:'xl/_rels/workbook.xml.rels',data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="${N}/package/2006/relationships">${sheets.map((s,i)=>`<Relationship Id="rId${i+1}" Type="${N}/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i+1}.xml"/>`).join('')}<Relationship Id="rId${sheets.length+1}" Type="${N}/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`});
+  files.push({name:'xl/styles.xml',data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="${N}/spreadsheetml/2006/main"><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font></fonts><fills count="2"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="2"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="1"/></cellXfs></styleSheet>`});
+  sheets.forEach((s,i)=>files.push({name:`xl/worksheets/sheet${i+1}.xml`,data:sheetXml(s)}));
+  return zipStore(files,'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+}
+const r1=x=>x===null||x===undefined?'':Math.round(x*10)/10;
+function taskRows(list){
+  const rows=[['STT','Nội dung công việc','Người thực hiện','Chức danh','Người giao','Ngày giao','Hạn hoàn thành','Ngày hoàn thành','Trạng thái','Lệch hạn (ngày)','Đánh giá','Điểm','Ghi chú']];
+  list.forEach((t,i)=>{const s=status(t),st=staffOf(V(t,'staff')),sc=taskScore(t);
+    rows.push([i+1,V(t,'title'),st?V(st,'name'):'',st?V(st,'pos'):'',V(t,'assigner'),fmtD(V(t,'start')),fmtD(V(t,'due')),fmtD(V(t,'done')),s.label,V(t,'done')&&V(t,'due')?s.d:'',V(t,'quality'),sc===null?'':r1(sc),V(t,'note')])});
+  return rows;
+}
+const taskWidths=[5,45,22,16,14,12,14,15,20,14,10,8,30];
+function exportTasksXlsx(){
+  const list=filteredTasks();if(!list.length){toast('Không có công việc nào để xuất');return}
+  deliver(makeXlsx([{name:'Cong viec',rows:taskRows(list),widths:taskWidths,bold:[0]}]),`CongViec_${today()}.xlsx`,true);
+}
+function exportKpiXlsx(){
+  const {from,to}=kpiP,rows=computeKPI(from,to);
+  const head=['Nhân viên','Chức danh','Đơn vị','Tổng việc','Đã xong','Xong sớm','Đúng hạn','Xong trễ','Quá hạn chưa xong','Đang làm','Tỷ lệ đúng hạn (%)','Lệch hạn TB (ngày)','Tốt','Đạt','Kém','Điểm KPI','Xếp loại'];
+  const line=r=>{const s=r.sid==='ALL'?null:staffOf(r.sid);return [r.sid==='ALL'?'TỔNG CỘNG':r.sid==='_'?'(Chưa giao người)':s?V(s,'name'):'(Đã xoá)',s?V(s,'pos'):'',s?V(s,'unit'):'',r.total,r.done,r.early,r.ontime,r.late,r.overdue,r.open,r.onRate===null?'':Math.round(r.onRate*100),r1(r.avgDev),r.tot,r.dat,r.kem,r.score===null?'':Math.round(r.score),rank(r.score)]};
+  const S=db.settings;
+  const k=[[`BÁO CÁO KPI từ ${fmtD(from)} đến ${fmtD(to)}`],[`Xuất bởi ${db.me.name} lúc ${fmtT(Date.now())}`],head,...rows.map(line),line(sumKPI(rows)),[],
+    [`Cách tính: việc xong đúng/sớm hạn = 100 điểm; trễ mỗi ngày trừ ${S.latePenalty} điểm; nhân hệ số đánh giá Tốt ${S.qTot}% / Đạt ${S.qDat}% / Kém ${S.qKem}%; việc quá hạn chưa xong = 0 điểm; việc chưa đến hạn không tính.`]];
+  const list=live(db.tasks).filter(t=>inPeriod(t,from,to)).sort((a,b)=>(V(a,'due')||'').localeCompare(V(b,'due')||''));
+  deliver(makeXlsx([{name:'KPI',rows:k,widths:[24,16,16,9,9,9,9,9,12,9,14,14,6,6,6,10,11],bold:[0,2,3+rows.length]},{name:'Chi tiet cong viec',rows:taskRows(list),widths:taskWidths,bold:[0]}]),`KPI_${from}_${to}.xlsx`,true);
+}
+function exportSync(share){
+  const f={app:'kpi-tracker',schema:1,me:db.me,exportedAt:Date.now(),lastImportFrom:db.lastImportFrom,peers:db.peers,aliases:db.aliases,settings:db.settings,staff:db.staff,tasks:db.tasks};
+  const d=new Date(),name=`KPI_${slug(db.me.name)}_${today()}_${pad(d.getHours())}${pad(d.getMinutes())}.json`;
+  deliver(new Blob([JSON.stringify(f)],{type:'application/json'}),name,share).then(ok=>{if(ok){db.lastExport=f.exportedAt;save();if(tab==='sync')render()}});
+}
+function readJson(input,cb){
+  const file=input.files&&input.files[0];if(!file)return;
+  const rd=new FileReader();
+  rd.onload=()=>{input.value='';let f;try{f=JSON.parse(rd.result)}catch(e){toast('File không đúng định dạng');return}
+    if(!f||f.app!=='kpi-tracker'||!f.me){toast('Đây không phải file dữ liệu của ứng dụng này');return}cb(f)};
+  rd.readAsText(file);
+}
+
+/* ================== GIAO DIỆN CHUNG ================== */
+const TABS=[['tasks','📝','Công việc'],['staff','👥','Nhân sự'],['kpi','📊','KPI'],['sync','🔄','Đồng bộ'],['set','⚙️','Cài đặt']];
+function go(t){tab=t;render();window.scrollTo(0,0)}
+function render(){
+  if(!db){renderSetup();return}
+  $('#who').innerHTML=`👤 ${esc(db.me.name)}<br>${fmtD(today())}`;
+  $('#nav').innerHTML=TABS.map(([k,i,l])=>`<button class="${tab===k?'on':''}" onclick="go('${k}')"><span class="i">${i}</span>${l}</button>`).join('');
+  ({tasks:renderTasks,staff:renderStaff,kpi:renderKPI,sync:renderSync,set:renderSet})[tab]();
+}
+function modal(html,mount){
+  const bg=document.createElement('div');bg.className='mbg';bg.innerHTML=`<div class="modal">${html}</div>`;
+  document.body.appendChild(bg);const close=()=>bg.remove();
+  bg.addEventListener('click',e=>{if(e.target===bg)close()});
+  mount&&mount(bg.querySelector('.modal'),close);return close;
+}
+
+/* ================== KHỞI TẠO ================== */
+function restoreFrom(f){
+  db={schema:1,me:f.me,peers:f.peers||{},staff:f.staff||{},tasks:f.tasks||{},aliases:f.aliases||{},lastImportFrom:f.lastImportFrom||{},settings:Object.assign(defSettings(),f.settings||{}),log:[],lastExport:f.exportedAt};
+  db.peers[db.me.id]=db.me.name;save();
+}
+function renderSetup(){
+  $('#nav').innerHTML='';$('#who').textContent='';
+  $('#main').innerHTML=`<div class="card"><h2>Bắt đầu sử dụng</h2>
+  <p class="mut">Mỗi máy đặt một tên riêng để phân biệt khi đồng bộ (VD: "Chỉ huy A", "Chỉ huy B").</p>
+  <label>Tên của bạn<input id="s_name" placeholder="VD: Chỉ huy A"></label>
+  <button class="btn pri" onclick="startNew()">Bắt đầu</button></div>
+  <div class="card"><h3>Đã có dữ liệu?</h3><p class="mut">Chuyển sang máy mới: chọn file .json mà bạn đã xuất từ máy cũ.</p>
+  <input type="file" id="s_file" accept=".json,application/json"></div>`;
+  $('#s_file').onchange=e=>readJson(e.target,f=>{if(confirm(`Khôi phục dữ liệu của "${f.me.name}" lên máy này?`)){restoreFrom(f);toast('Đã khôi phục');render()}});
+}
+function startNew(){
+  const n=$('#s_name').value.trim();if(!n){toast('Nhập tên của bạn');return}
+  db={schema:1,me:{id:uid(),name:n},peers:{},staff:{},tasks:{},aliases:{},lastImportFrom:{},settings:defSettings(),log:[],lastExport:0};
+  db.peers[db.me.id]=n;save();tab='staff';render();
+}
+
+/* ================== TAB CÔNG VIỆC ================== */
+const ST_OPTS=[['open','Chưa hoàn thành'],['overdue','Quá hạn'],['soon','Sắp đến hạn (≤2 ngày)'],['done','Đã hoàn thành'],['late','Hoàn thành trễ'],['all','Tất cả']];
+function setSt(s){ui.st=s;render()}
+function filteredTasks(){
+  const q=norm(ui.q);
+  return live(db.tasks).filter(t=>{
+    const s=status(t);
+    if(ui.staff&&canon(V(t,'staff'))!==ui.staff)return false;
+    if(ui.asg&&V(t,'assigner')!==ui.asg)return false;
+    if(q){const hay=norm(V(t,'title')+' '+V(t,'note')+' '+staffName(V(t,'staff')));if(!hay.includes(q))return false}
+    switch(ui.st){case 'open':return !V(t,'done');case 'overdue':return s.k==='overdue';case 'soon':return s.k==='soon';case 'done':return !!V(t,'done');case 'late':return s.k==='late';default:return true}
+  }).sort((a,b)=>{const da=V(a,'done'),dd=V(b,'done');if(!da&&dd)return -1;if(da&&!dd)return 1;if(!da)return (V(a,'due')||'9999').localeCompare(V(b,'due')||'9999');return dd.localeCompare(da)});
+}
+function renderTasks(){
+  const tree=staffTree(),asgs=assigners();let open=0,over=0,soon=0;
+  live(db.tasks).forEach(t=>{if(!V(t,'done')){open++;const k=status(t).k;if(k==='overdue')over++;else if(k==='soon')soon++}});
+  $('#main').innerHTML=`
+  <div class="chips">
+    <button class="chip ${ui.st==='open'?'on':''}" onclick="setSt('open')">Chưa xong <b>${open}</b></button>
+    <button class="chip c-bad ${ui.st==='overdue'?'on':''}" onclick="setSt('overdue')">Quá hạn <b>${over}</b></button>
+    <button class="chip c-warn ${ui.st==='soon'?'on':''}" onclick="setSt('soon')">Sắp đến hạn <b>${soon}</b></button>
+  </div>
+  <div class="filters">
+    <input id="fq" type="search" placeholder="🔍 Tìm nội dung, tên người..." value="${esc(ui.q)}">
+    <select id="fst">${ST_OPTS.map(([k,l])=>`<option value="${k}" ${ui.st===k?'selected':''}>${l}</option>`).join('')}</select>
+    <select id="fsf"><option value="">Tất cả nhân viên</option>${tree.map(({r,lv})=>`<option value="${r.id}" ${ui.staff===r.id?'selected':''}>${'— '.repeat(lv)}${esc(V(r,'name'))}</option>`).join('')}</select>
+    <select id="fas"><option value="">Mọi người giao</option>${asgs.map(a=>`<option ${ui.asg===a?'selected':''}>${esc(a)}</option>`).join('')}</select>
+  </div>
+  <div class="bar"><button class="btn pri" onclick="openTask()">＋ Giao việc mới</button><span class="sp"></span><button class="btn" onclick="exportTasksXlsx()">⬇ Xuất Excel</button></div>
+  <div id="tlist"></div>`;
+  $('#fq').oninput=e=>{ui.q=e.target.value;renderTaskList()};
+  $('#fst').onchange=e=>{ui.st=e.target.value;render()};
+  $('#fsf').onchange=e=>{ui.staff=e.target.value;renderTaskList()};
+  $('#fas').onchange=e=>{ui.asg=e.target.value;renderTaskList()};
+  renderTaskList();
+}
+const QC={'Tốt':'tot','Đạt':'dat','Kém':'kem'};
+function renderTaskList(){
+  const list=filteredTasks(),el=$('#tlist');
+  if(!list.length){el.innerHTML=`<div class="empty">${live(db.staff).length?'Không có công việc nào phù hợp.':'Chưa có nhân viên. Vào tab <b>Nhân sự</b> để thêm trước.'}</div>`;return}
+  el.innerHTML=`<div class="mut" style="margin-bottom:6px">${list.length} công việc</div>`+list.map(t=>{
+    const s=status(t),q=V(t,'quality'),done=V(t,'done'),st=staffOf(V(t,'staff'));
+    return `<div class="card task st-${s.k}" onclick="openTask('${t.id}')">
+      <div class="row1"><span class="badge b-${s.k}">${s.label}</span>${q?`<span class="badge q-${QC[q]}">${q}</span>`:''}<span class="sp"></span><span class="mut">Giao: ${esc(V(t,'assigner'))}</span></div>
+      <div class="ttl">${esc(V(t,'title'))}</div>
+      <div class="mut">👤 ${st?esc(V(st,'name'))+(V(st,'pos')?' · '+esc(V(st,'pos')):''):'<i>chưa chọn người</i>'}</div>
+      <div class="mut">Giao ${fmtD(V(t,'start'))||'—'} · Hạn ${fmtD(V(t,'due'))||'—'}${done?' · Xong '+fmtD(done):''}</div>
+      ${!done?`<div style="margin-top:8px"><button class="btn sm" onclick="event.stopPropagation();quickDone('${t.id}')">✓ Hoàn thành hôm nay</button></div>`:''}
+    </div>`}).join('');
+}
+function quickDone(id){setF(db.tasks[id],'done',today());save();render();toast('Đã hoàn thành. Bấm vào việc để đánh giá Tốt/Đạt/Kém.')}
+function openTask(id){
+  const t=id?db.tasks[id]:null,g=k=>t?V(t,k):'';
+  const tree=staffTree(),asgs=assigners(),cur=t?g('assigner'):db.me.name,sid=canon(g('staff'));
+  if(cur&&!asgs.includes(cur))asgs.push(cur);
+  let opts=tree.map(({r,lv})=>`<option value="${r.id}" ${sid===r.id?'selected':''}>${'— '.repeat(lv)}${esc(V(r,'name'))}${V(r,'pos')?' ('+esc(V(r,'pos'))+')':''}</option>`).join('');
+  if(sid&&!tree.some(x=>x.r.id===sid))opts+=`<option value="${sid}" selected>(đã xoá) ${esc(staffName(sid))}</option>`;
+  modal(`<h2>${t?'Sửa công việc':'Giao việc mới'}</h2>
+    <label>Nội dung công việc *<textarea id="m_title" rows="3">${esc(g('title'))}</textarea></label>
+    <label>Người thực hiện<select id="m_staff"><option value="">— Chưa chọn —</option>${opts}</select></label>
+    <label>Người giao việc<select id="m_asg">${asgs.map(a=>`<option ${a===cur?'selected':''}>${esc(a)}</option>`).join('')}</select></label>
+    <div class="grid2">
+      <label>Ngày giao<input type="date" id="m_start" value="${t?g('start'):today()}"></label>
+      <label>Hạn hoàn thành<input type="date" id="m_due" value="${g('due')}"></label>
+    </div>
+    <label>Ngày hoàn thành thực tế<div class="inl"><input type="date" id="m_done" value="${g('done')}"><button class="btn sm" type="button" id="b_today">Hôm nay</button><button class="btn sm" type="button" id="b_clr">Xoá</button></div></label>
+    <label>Đánh giá chất lượng<select id="m_q">${['','Tốt','Đạt','Kém'].map(q=>`<option value="${q}" ${g('quality')===q?'selected':''}>${q||'— Chưa đánh giá —'}</option>`).join('')}</select></label>
+    <label>Ghi chú<textarea id="m_note" rows="2">${esc(g('note'))}</textarea></label>
+    ${t?`<p class="mut">${lastEdit(t)}</p>`:''}
+    <div class="bar"><button class="btn pri" id="b_save">Lưu</button><button class="btn" id="b_cancel">Huỷ</button><span class="sp"></span>${t?'<button class="btn bad" id="b_del">Xoá</button>':''}</div>`,
+  (m,close)=>{
+    m.querySelector('#b_today').onclick=()=>{m.querySelector('#m_done').value=today()};
+    m.querySelector('#b_clr').onclick=()=>{m.querySelector('#m_done').value=''};
+    m.querySelector('#b_cancel').onclick=close;
+    if(t)m.querySelector('#b_del').onclick=()=>{if(confirm('Xoá công việc này?')){setF(t,'deleted',true);save();close();render();toast('Đã xoá')}};
+    m.querySelector('#b_save').onclick=()=>{
+      const v=k=>m.querySelector('#m_'+k).value;
+      const vals={title:v('title').trim(),staff:v('staff'),assigner:v('asg'),start:v('start'),due:v('due'),done:v('done'),quality:v('q'),note:v('note').trim()};
+      if(!vals.title){toast('Nhập nội dung công việc');return}
+      if(vals.due&&vals.start&&vals.due<vals.start&&!confirm('Hạn hoàn thành đang trước ngày giao. Vẫn lưu?'))return;
+      if(t){for(const k in vals)setF(t,k,vals[k])}else{const r=mk({...vals,deleted:false});db.tasks[r.id]=r}
+      save();close();render();toast('Đã lưu');
+    };
+    if(!t)setTimeout(()=>m.querySelector('#m_title').focus(),50);
+  });
+}
+
+/* ================== TAB NHÂN SỰ ================== */
+function renderStaff(){
+  const tree=staffTree(),cnt={};
+  live(db.tasks).forEach(t=>{if(V(t,'done'))return;const s=canon(V(t,'staff'));const c=cnt[s]||(cnt[s]={o:0,x:0});c.o++;if(status(t).k==='overdue')c.x++});
+  $('#main').innerHTML=`<div class="bar"><button class="btn pri" onclick="openStaff()">＋ Thêm nhân viên</button><button class="btn" onclick="bulkStaff()">Thêm hàng loạt</button><span class="sp"></span><span class="mut">${tree.length} người</span></div>
+  ${tree.length?tree.map(({r,lv})=>{const c=cnt[r.id]||{o:0,x:0};return `<div class="card" style="margin-left:${Math.min(lv,4)*18}px">
+    <div class="staff-row" onclick="openStaff('${r.id}')"><div class="sp"><div class="nm">${lv?'↳ ':''}${esc(V(r,'name'))}</div><div class="mut">${esc(V(r,'pos')||'—')}${V(r,'unit')?' · '+esc(V(r,'unit')):''}</div></div>
+    ${c.x?`<span class="badge b-overdue">Quá hạn ${c.x}</span>`:''}<span class="badge b-doing">Đang làm ${c.o}</span></div>
+    <div class="bar" style="margin:8px 0 0"><button class="btn sm" onclick="ui.staff='${r.id}';ui.st='all';go('tasks')">Xem việc</button><button class="btn sm" onclick="openTask();setTimeout(()=>{const s=document.querySelector('#m_staff');if(s)s.value='${r.id}'},0)">＋ Giao việc</button></div></div>`}).join('')
+  :'<div class="empty">Chưa có nhân viên nào. Bấm "Thêm nhân viên" để bắt đầu.</div>'}`;
+}
+function openStaff(id){
+  const s=id?db.staff[id]:null,g=k=>s?V(s,k):'',par=canon(g('parent'));
+  const others=staffTree().filter(x=>x.r.id!==id);
+  modal(`<h2>${s?'Sửa nhân viên':'Thêm nhân viên'}</h2>
+    <label>Họ và tên *<input id="m_name" value="${esc(g('name'))}"></label>
+    <label>Chức danh / Chức vụ<input id="m_pos" value="${esc(g('pos'))}" placeholder="VD: Trợ lý, Tổ trưởng..."></label>
+    <label>Đơn vị / Bộ phận<input id="m_unit" value="${esc(g('unit'))}"></label>
+    <label>Cấp trên trực tiếp (thuộc quyền của)<select id="m_par"><option value="">— Không —</option>${others.map(({r,lv})=>`<option value="${r.id}" ${par===r.id?'selected':''}>${'— '.repeat(lv)}${esc(V(r,'name'))}</option>`).join('')}</select></label>
+    ${s?`<p class="mut">${lastEdit(s)}</p>`:''}
+    <div class="bar"><button class="btn pri" id="b_save">Lưu</button><button class="btn" id="b_cancel">Huỷ</button><span class="sp"></span>${s?'<button class="btn bad" id="b_del">Xoá</button>':''}</div>`,
+  (m,close)=>{
+    m.querySelector('#b_cancel').onclick=close;
+    if(s)m.querySelector('#b_del').onclick=()=>{
+      const n=live(db.tasks).filter(t=>canon(V(t,'staff'))===id&&!V(t,'done')).length;
+      if(confirm(n?`Người này còn ${n} việc chưa xong. Vẫn xoá? (các việc vẫn được giữ lại)`:'Xoá nhân viên này?')){setF(s,'deleted',true);save();close();render()}};
+    m.querySelector('#b_save').onclick=()=>{
+      const v=k=>m.querySelector('#m_'+k).value.trim();
+      const vals={name:v('name'),pos:v('pos'),unit:v('unit'),parent:v('par')};
+      if(!vals.name){toast('Nhập họ tên');return}
+      if(!s&&live(db.staff).some(x=>norm(V(x,'name'))===norm(vals.name))&&!confirm('Đã có người trùng tên. Vẫn thêm?'))return;
+      if(s){for(const k in vals)setF(s,k,vals[k])}else{const r=mk({...vals,deleted:false});db.staff[r.id]=r}
+      save();close();render();toast('Đã lưu');
+    };
+    if(!s)setTimeout(()=>m.querySelector('#m_name').focus(),50);
+  });
+}
+function bulkStaff(){
+  modal(`<h2>Thêm hàng loạt</h2><p class="mut">Mỗi dòng một người: <b>Họ tên ; Chức danh ; Đơn vị</b>. Có thể dán trực tiếp 3 cột từ Excel.</p>
+    <textarea id="m_bulk" rows="9" placeholder="Nguyễn Văn A; Tổ trưởng; Tổ 1&#10;Trần Văn B; Nhân viên; Tổ 1"></textarea>
+    <div class="bar"><button class="btn pri" id="b_ok">Thêm</button><button class="btn" id="b_cancel">Huỷ</button></div>`,
+  (m,close)=>{
+    m.querySelector('#b_cancel').onclick=close;
+    m.querySelector('#b_ok').onclick=()=>{
+      let n=0;const have=new Set(live(db.staff).map(x=>norm(V(x,'name'))));
+      m.querySelector('#m_bulk').value.split(/\r?\n/).forEach(line=>{
+        const p=line.split(/\t|;/).map(x=>x.trim());if(!p[0]||have.has(norm(p[0])))return;
+        const r=mk({name:p[0],pos:p[1]||'',unit:p[2]||'',parent:'',deleted:false});db.staff[r.id]=r;have.add(norm(p[0]));n++;
+      });
+      save();close();render();toast(`Đã thêm ${n} người (bỏ qua tên trùng)`);
+    };
+  });
+}
+
+/* ================== TAB KPI ================== */
+function setPeriod(p){kpiP=periodPreset(p);render()}
+function renderKPI(){
+  if(!kpiP)kpiP=periodPreset('m');
+  const rows=computeKPI(kpiP.from,kpiP.to),tot=sumKPI(rows),S=db.settings;
+  const name=r=>{if(r.sid==='_')return '<i>(Chưa giao người)</i>';const s=staffOf(r.sid);return s?esc(V(s,'name'))+(V(s,'deleted')?' <span class="mut">(đã xoá)</span>':''):'(?)'};
+  const sc=r=>r.score===null?'—':`<span class="score">${Math.round(r.score)}</span> <span class="mut">${rank(r.score)}</span>`;
+  const dev=r=>r.avgDev===null?'—':(r.avgDev>0?'+':'')+r1(r.avgDev);
+  const line=(r,n)=>`<tr class="${r.sid==='ALL'?'tot':''}"><td>${n}</td><td>${r.total}</td><td>${r.done}</td><td>${r.early}</td><td>${r.ontime}</td><td>${r.late}</td><td>${r.overdue}</td><td>${r.open}</td><td>${r.onRate===null?'—':Math.round(r.onRate*100)+'%'}</td><td>${dev(r)}</td><td>${r.tot}/${r.dat}/${r.kem}</td><td>${sc(r)}</td></tr>`;
+  $('#main').innerHTML=`
+  <div class="chips">${[['m','Tháng này'],['pm','Tháng trước'],['q','Quý này'],['y','Năm nay']].map(([k,l])=>`<button class="chip ${kpiP.p===k?'on':''}" onclick="setPeriod('${k}')">${l}</button>`).join('')}</div>
+  <div class="grid2"><label>Từ ngày<input type="date" id="k_from" value="${kpiP.from}"></label><label>Đến ngày<input type="date" id="k_to" value="${kpiP.to}"></label></div>
+  <div class="bar"><span class="mut">Tính theo hạn hoàn thành nằm trong khoảng</span><span class="sp"></span><button class="btn" onclick="exportKpiXlsx()">⬇ Xuất Excel</button></div>
+  ${rows.length?`<div class="tw"><table><thead><tr><th>Nhân viên</th><th>Tổng</th><th>Xong</th><th>Sớm</th><th>Đúng hạn</th><th>Trễ</th><th>Quá hạn</th><th>Đang làm</th><th>Tỷ lệ đúng hạn</th><th>Lệch TB (ngày)</th><th>Tốt/Đạt/Kém</th><th>Điểm KPI</th></tr></thead>
+  <tbody>${rows.map(r=>line(r,name(r))).join('')}${line(tot,'TỔNG CỘNG')}</tbody></table></div>`:'<div class="empty">Không có công việc nào trong khoảng thời gian này.</div>'}
+  <div class="card mut" style="margin-top:12px"><b>Cách tính điểm:</b> mỗi việc đã xong đúng hoặc sớm hạn được 100 điểm, trễ mỗi ngày trừ ${S.latePenalty} điểm. Sau đó nhân hệ số đánh giá: Tốt ${S.qTot}%, Đạt ${S.qDat}%, Kém ${S.qKem}% (chưa đánh giá thì giữ nguyên). Việc quá hạn mà chưa xong được 0 điểm; việc chưa đến hạn không tính. Điểm KPI là điểm trung bình các việc.<br>Xếp loại: ≥90 Xuất sắc · ≥75 Tốt · ≥50 Đạt · &lt;50 Chưa đạt. "Lệch TB": số âm là xong sớm, số dương là xong trễ. Thay đổi hệ số ở tab Cài đặt.</div>`;
+  const upd=()=>{const f=$('#k_from').value,t=$('#k_to').value;if(f&&t){kpiP={from:f,to:t,p:''};render()}};
+  $('#k_from').onchange=upd;$('#k_to').onchange=upd;
+}
+
+/* ================== TAB ĐỒNG BỘ ================== */
+const FL={title:'Nội dung',staff:'Người thực hiện',assigner:'Người giao',start:'Ngày giao',due:'Hạn hoàn thành',done:'Ngày hoàn thành',quality:'Đánh giá',note:'Ghi chú',deleted:'Trạng thái xoá',name:'Họ tên',pos:'Chức danh',unit:'Đơn vị',parent:'Cấp trên'};
+function fmtVal(k,v,w){
+  if(k==='deleted')return v?'Đã xoá':'Còn';
+  if(v===''||v===undefined||v===null)return '(trống)';
+  if(['start','due','done'].includes(k))return fmtD(v);
+  if(k==='staff'||k==='parent'){const s=w.staff[canon(v,w.aliases)];return s?V(s,'name'):'(?)'}
+  return String(v);
+}
+function renderSync(){
+  const peers=Object.entries(db.lastImportFrom).map(([id,t])=>`<li>${esc(db.peers[id]||'?')}: file xuất lúc ${fmtT(t)}</li>`).join('');
+  $('#main').innerHTML=`
+  <div class="card"><h3>Máy này: ${esc(db.me.name)}</h3>
+    <div>Mã dữ liệu: <span class="code">${dataHash()}</span></div>
+    <div class="mut">${live(db.staff).length} nhân viên · ${live(db.tasks).length} công việc · Lần xuất file gần nhất: ${db.lastExport?fmtT(db.lastExport):'chưa có'}</div>
+    <div class="mut">Hai máy có cùng mã dữ liệu nghĩa là dữ liệu đã giống hệt nhau.</div></div>
+  <div class="card"><h3>① Xuất file tổng hợp</h3><p class="mut">Gửi file này cho người kia qua Zalo, Telegram hoặc USB. File này cũng là bản sao lưu của bạn.</p>
+    <div class="bar">${navigator.share?'<button class="btn pri" onclick="exportSync(true)">📤 Chia sẻ (Zalo…)</button>':''}<button class="btn ${navigator.share?'':'pri'}" onclick="exportSync(false)">⬇ Tải file về máy</button></div></div>
+  <div class="card"><h3>② Nhập & gộp file của người kia</h3><input type="file" id="imp" accept=".json,application/json"><div id="preview" style="margin-top:10px"></div></div>
+  <div class="card"><h3>Lịch sử</h3>${peers?`<div class="mut">Đã nhận dữ liệu của:</div><ul class="mut">${peers}</ul>`:'<div class="mut">Chưa gộp lần nào.</div>'}
+    ${(db.log||[]).slice(0,5).map(l=>`<div class="mut">• ${fmtT(l.at)}: gộp file của ${esc(l.name)} (+${l.st.nt} việc, cập nhật ${l.st.ut}; xung đột ${l.cf})</div>`).join('')}
+    <div class="bar"><button class="btn" onclick="undoMerge()">↶ Hoàn tác lần gộp gần nhất</button></div></div>
+  <div class="card help"><h3>Quy trình gộp giữa 2 người</h3><ol class="mut">
+    <li>Cả A và B cùng bấm <b>Xuất file tổng hợp</b> rồi gửi cho nhau.</li>
+    <li>Mỗi người <b>nhập file của người kia</b>, xem tóm tắt, chọn bản giữ lại nếu có xung đột, rồi bấm <b>Xác nhận gộp</b>.</li>
+    <li>Đối chiếu <b>mã dữ liệu</b> hai máy. Nếu khác nhau (thường do chọn xung đột khác nhau), một người xuất lại file và người kia gộp thêm lần nữa.</li>
+    <li>Mỗi lần gộp, app tự lưu bản trước đó, có thể <b>hoàn tác</b>.</li></ol></div>`;
+  $('#imp').onchange=e=>readJson(e.target,f=>{
+    if(f.me.id===db.me.id){toast('Đây là file do chính máy này xuất. Muốn khôi phục thì vào Cài đặt.',4000);return}
+    imp={file:f,choices:{}};renderPreview();
+  });
+  if(imp)renderPreview();
+}
+function renderPreview(){
+  const el=$('#preview');if(!el||!imp)return;
+  const {w,conflicts,dups,st}=doMerge(imp.file,imp.choices),f=imp.file;
+  const recName=c=>{const r=c.type==='t'?w.tasks[c.id]:w.staff[c.id];return c.type==='t'?'Việc: '+esc(V(r,'title')).slice(0,80):'Nhân viên: '+esc(V(r,'name'))};
+  el.innerHTML=`<div class="card hl"><h3>File của ${esc(f.me.name)}</h3><div class="mut">Xuất lúc ${fmtT(f.exportedAt)}</div>
+    <ul><li>Nhân viên: thêm mới ${st.ns}, cập nhật ${st.us}</li><li>Công việc: thêm mới ${st.nt}, cập nhật ${st.ut}</li><li>Xung đột cần chọn: <b>${conflicts.length}</b></li></ul>
+    ${dups.length?`<h4>Nhân viên trùng tên (gộp thành 1 người?)</h4>${dups.map(d=>`<label class="chk"><input type="checkbox" data-dup="${d.key}" ${d.ok?'checked':''}> <span><b>${esc(d.name)}</b> <span class="mut">(của bạn: ${esc(d.lpos||'—')} / của ${esc(f.me.name)}: ${esc(d.rpos||'—')})</span></span></label>`).join('')}`:''}
+    ${conflicts.length?`<h4>Cả hai cùng sửa: chọn bản giữ lại</h4>${conflicts.map(c=>`<div class="cf"><div><b>${recName(c)}</b></div><div class="mut">Trường: ${FL[c.k]||c.k}</div>
+      <label class="chk"><input type="radio" name="${c.key}" value="me" ${c.c==='me'?'checked':''}> <span>Của tôi: <b>${esc(fmtVal(c.k,c.l.v,w))}</b> <span class="mut">(${fmtT(c.l.t)})</span></span></label>
+      <label class="chk"><input type="radio" name="${c.key}" value="them" ${c.c==='them'?'checked':''}> <span>Của ${esc(f.me.name)}: <b>${esc(fmtVal(c.k,c.r.v,w))}</b> <span class="mut">(${fmtT(c.r.t)})</span></span></label></div>`).join('')}`:''}
+    <div class="bar"><button class="btn pri" onclick="applyImport()">✓ Xác nhận gộp</button><button class="btn" onclick="imp=null;render()">Huỷ</button></div></div>`;
+  el.querySelectorAll('[data-dup]').forEach(x=>x.onchange=()=>{imp.choices[x.dataset.dup]=x.checked;renderPreview()});
+  el.querySelectorAll('input[type=radio]').forEach(x=>x.onchange=()=>{imp.choices[x.name]=x.value});
+}
+function applyImport(){
+  if(!imp)return;const res=doMerge(imp.file,imp.choices);
+  try{localStorage.setItem(KU,JSON.stringify(db))}catch(e){}
+  db=res.w;save();imp=null;render();toast('Đã gộp xong. Mã dữ liệu: '+dataHash(),4000);
+}
+function undoMerge(){
+  let u=null;try{u=localStorage.getItem(KU)}catch(e){}
+  if(!u){toast('Không có bản để hoàn tác');return}
+  if(!confirm('Quay lại dữ liệu trước lần gộp gần nhất? Mọi thay đổi sau lần gộp đó sẽ mất.'))return;
+  db=JSON.parse(u);save();try{localStorage.removeItem(KU)}catch(e){}render();toast('Đã hoàn tác');
+}
+
+/* ================== TAB CÀI ĐẶT ================== */
+function renderSet(){
+  const S=db.settings;
+  $('#main').innerHTML=`
+  <div class="card"><h3>Tên hiển thị</h3><label>Tên của bạn trên máy này<input id="c_name" value="${esc(db.me.name)}"></label><button class="btn pri" onclick="saveName()">Lưu tên</button></div>
+  <div class="card"><h3>Hệ số tính KPI</h3>
+    <label>Trừ điểm cho mỗi ngày trễ<input type="number" id="c_lp" value="${S.latePenalty}" min="0" max="100"></label>
+    <div class="grid2"><label>Hệ số "Tốt" (%)<input type="number" id="c_qt" value="${S.qTot}"></label><label>Hệ số "Đạt" (%)<input type="number" id="c_qd" value="${S.qDat}"></label></div>
+    <label>Hệ số "Kém" (%)<input type="number" id="c_qk" value="${S.qKem}"></label>
+    <div class="mut" style="margin-bottom:8px">Hệ số chỉ áp dụng trên máy này. Hai chỉ huy nên đặt giống nhau để điểm KPI khớp.</div>
+    <button class="btn pri" onclick="saveKpiSet()">Lưu hệ số</button></div>
+  <div class="card"><h3>Sao lưu & khôi phục</h3>
+    <p class="mut">Dữ liệu nằm trong trình duyệt của máy này. Nếu xoá dữ liệu trình duyệt hoặc xoá ứng dụng thì sẽ mất, nên hãy xuất file định kỳ ở tab Đồng bộ.</p>
+    <label>Khôi phục từ file (thay thế toàn bộ dữ liệu hiện tại)<input type="file" id="c_rest" accept=".json,application/json"></label>
+    <button class="btn bad" onclick="wipe()">Xoá toàn bộ dữ liệu trên máy này</button></div>
+  <div class="card mut">Theo dõi công việc & KPI · chạy hoàn toàn offline · dữ liệu không gửi đi đâu.</div>`;
+  $('#c_rest').onchange=e=>readJson(e.target,f=>{
+    const msg=f.me.id===db.me.id?'Khôi phục toàn bộ dữ liệu từ file sao lưu này? Dữ liệu hiện tại sẽ bị thay thế.':`File này là của "${f.me.name}", không phải của máy này. Khôi phục sẽ biến máy này thành "${f.me.name}". Bạn chắc chắn chứ? (Muốn gộp dữ liệu thì dùng tab Đồng bộ.)`;
+    if(confirm(msg)){try{localStorage.setItem(KU,JSON.stringify(db))}catch(x){}restoreFrom(f);render();toast('Đã khôi phục')}
+  });
+}
+function saveName(){const n=$('#c_name').value.trim();if(!n)return;db.me.name=n;db.peers[db.me.id]=n;save();render();toast('Đã lưu tên')}
+function saveKpiSet(){const g=id=>Math.max(0,Number($(id).value)||0);db.settings={latePenalty:g('#c_lp'),qTot:g('#c_qt'),qDat:g('#c_qd'),qKem:g('#c_qk')};save();toast('Đã lưu hệ số')}
+function wipe(){if(confirm('Xoá TOÀN BỘ dữ liệu trên máy này?')&&confirm('Chắc chắn? Thao tác không thể hoàn tác nếu bạn chưa xuất file.')){try{localStorage.removeItem(K);localStorage.removeItem(KU)}catch(e){}db=null;render()}}
+
+/* ================== CHẠY ================== */
+if(typeof document!=='undefined'&&document.getElementById('main')){
+  db=load();
+  if(db){db.settings=Object.assign(defSettings(),db.settings||{});db.aliases=db.aliases||{};db.lastImportFrom=db.lastImportFrom||{};db.peers=db.peers||{}}
+  try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+  render();
+  if('serviceWorker' in navigator&&location.protocol.startsWith('http')){
+    navigator.serviceWorker.register('sw.js').then(reg=>{
+      reg.addEventListener('updatefound',()=>{const w=reg.installing;w&&w.addEventListener('statechange',()=>{if(w.state==='installed'&&navigator.serviceWorker.controller)toast('Đã có bản cập nhật mới. Đóng hẳn app rồi mở lại để dùng bản mới.',6000)})});
+    }).catch(()=>{});
+  }
+}
+</script>
+</body>
+</html>
