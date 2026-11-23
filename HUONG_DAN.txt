@@ -1,6 +1,39 @@
 HƯỚNG DẪN ĐƯA APP LÊN GITHUB PAGES VÀ CÀI LÊN ĐIỆN THOẠI
 ==========================================================
 
+A. ĐƯA LÊN GITHUB (làm trên máy tính, chỉ 1 lần)
+1. Vào https://github.com -> đăng ký / đăng nhập tài khoản.
+2. Bấm dấu "+" góc trên phải -> "New repository".
+   - Repository name: congviec-kpi  (tên gì cũng được, không dấu, không cách)
+   - Chọn "Public"  (GitHub Pages miễn phí yêu cầu Public)
+   - Bấm "Create repository".
+3. Trong trang repo vừa tạo, bấm "uploading an existing file".
+4. Giải nén file zip, KÉO THẢ TẤT CẢ nội dung bên trong vào trang:
+      index.html, manifest.webmanifest, sw.js, thư mục icons
+   (kéo cả thư mục icons vào, GitHub giữ nguyên thư mục)
+   -> bấm "Commit changes".
+5. Vào tab "Settings" của repo -> mục "Pages" (cột trái).
+   - Source: "Deploy from a branch"
+   - Branch: chọn "main", thư mục "/ (root)" -> "Save".
+6. Đợi 1–2 phút, tải lại trang Pages, sẽ thấy địa chỉ dạng:
+      https://TEN-TAI-KHOAN.github.io/congviec-kpi/
+   Mở thử trên máy tính thấy app chạy là xong.
+
+LƯU Ý: repo Public nghĩa là ai có đường link đều xem được CODE của app.
+DỮ LIỆU công việc/nhân viên KHÔNG nằm trên GitHub — chỉ lưu trên từng máy.
+
+B. CÀI LÊN MÀN HÌNH CHÍNH (cần mạng đúng lần này)
+* iPhone / iPad:
+  1. Mở đường link bằng SAFARI (bắt buộc Safari).
+  2. Bấm nút Chia sẻ (hình vuông có mũi tên lên).
+  3. Chọn "Thêm vào MH chính" -> "Thêm".
+  4. Mở app từ biểu tượng mới trên màn hình chính.
+* Android:
+  1. Mở đường link bằng CHROME.
+  2. Bấm menu ⋮ -> "Cài đặt ứng dụng" (hoặc "Thêm vào màn hình chính").
+* Windows (Chrome/Edge):
+  Mở đường link -> bấm biểu tượng cài đặt (màn hình có mũi tên) ở thanh địa chỉ.
+
 Sau khi cài: mở app 1 lần khi còn mạng, sau đó tắt mạng vẫn dùng bình thường.
 
 C. LƯU Ý QUAN TRỌNG
@@ -8,3 +41,9 @@ C. LƯU Ý QUAN TRỌNG
   Luôn mở bằng biểu tượng app, đừng nhập dữ liệu trong Safari.
 - Định kỳ vào tab Đồng bộ -> Xuất file để sao lưu.
 - Xoá app khỏi màn hình chính = mất dữ liệu trên máy đó (trừ khi đã xuất file).
+
+D. KHI CẬP NHẬT PHIÊN BẢN MỚI
+1. Thay file index.html mới trên GitHub (Add file -> Upload files -> Commit).
+2. Mở sw.js trên GitHub, sửa dòng  VERSION = 'kpi-v1'  thành 'kpi-v2' (v3...) -> Commit.
+3. Trên điện thoại: mở app khi có mạng, đóng hẳn rồi mở lại là có bản mới.
+   Dữ liệu cũ vẫn giữ nguyên.

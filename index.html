@@ -3,36 +3,75 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#1f6feb">
-<title>BCHQS xã An Phú</title>
+<meta name="theme-color" content="#2b5fab">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Công việc KPI">
+<title>BCHQS xã An Phú – Công việc & KPI</title>
 <style>
-:root{--bg:#f4f5f7;--card:#fff;--tx:#1d2330;--mut:#6b7280;--bd:#e3e6eb;--pri:#1f6feb;--ok:#18864b;--warn:#b7791f;--bad:#c53030;--early:#0e7490;--in:#fff}
-@media (prefers-color-scheme:dark){:root{--bg:#121417;--card:#1c1f24;--tx:#e8eaed;--mut:#9aa1ab;--bd:#2f343b;--pri:#4c8dff;--ok:#3fb27f;--warn:#e0a84a;--bad:#f06363;--early:#38b2c9;--in:#15181c}}
+:root{
+  --bg:#eef1f6;--bg2:#e6ebf3;--card:#fff;--card2:#f8fafc;--tx:#1c2433;--mut:#667085;--bd:#dde3ec;--bd2:#cfd7e3;
+  --pri:#2b5fab;--pri-s:rgba(43,95,171,.09);--in:#fff;--track:#e9edf3;
+  --ok:#2f855a;--ok-s:rgba(47,133,90,.11);--early:#2c7a8c;--early-s:rgba(44,122,140,.11);
+  --warn:#b7791f;--warn-s:rgba(183,121,31,.12);--bad:#c0504d;--bad-s:rgba(192,80,77,.11);--open:#8a99b0;--open-s:rgba(138,153,176,.14);
+  --sh:0 1px 2px rgba(16,24,40,.04),0 1px 3px rgba(16,24,40,.06);
+}
+:root[data-theme=dark]{
+  --bg:#0f141a;--bg2:#121922;--card:#18202a;--card2:#1c2530;--tx:#e6eaf0;--mut:#98a3b3;--bd:#263140;--bd2:#2f3b4c;
+  --pri:#6b9be0;--pri-s:rgba(107,155,224,.13);--in:#121922;--track:#243041;
+  --ok:#5fb98a;--ok-s:rgba(95,185,138,.14);--early:#5bb1c2;--early-s:rgba(91,177,194,.14);
+  --warn:#d9a54d;--warn-s:rgba(217,165,77,.15);--bad:#e07a76;--bad-s:rgba(224,122,118,.14);--open:#8494ab;--open-s:rgba(132,148,171,.16);
+  --sh:0 1px 2px rgba(0,0,0,.25);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){
+  --bg:#0f141a;--bg2:#121922;--card:#18202a;--card2:#1c2530;--tx:#e6eaf0;--mut:#98a3b3;--bd:#263140;--bd2:#2f3b4c;
+  --pri:#6b9be0;--pri-s:rgba(107,155,224,.13);--in:#121922;--track:#243041;
+  --ok:#5fb98a;--ok-s:rgba(95,185,138,.14);--early:#5bb1c2;--early-s:rgba(91,177,194,.14);
+  --warn:#d9a54d;--warn-s:rgba(217,165,77,.15);--bad:#e07a76;--bad-s:rgba(224,122,118,.14);--open:#8494ab;--open-s:rgba(132,148,171,.16);
+  --sh:0 1px 2px rgba(0,0,0,.25);
+}}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
-body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--tx);font-size:15px;padding-bottom:calc(70px + env(safe-area-inset-bottom))}
-header{position:sticky;top:0;z-index:5;background:var(--card);border-bottom:1px solid var(--bd);padding:10px 14px;padding-top:calc(10px + env(safe-area-inset-top));display:flex;align-items:center;gap:10px}
-header h1{font-size:17px;margin:0;flex:1}
-.who{font-size:12px;color:var(--mut);text-align:right}
-main{max-width:1000px;margin:0 auto;padding:12px}
+html[data-font=large] body{zoom:1.13}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);background-image:linear-gradient(180deg,var(--bg2) 0,var(--bg) 260px);background-attachment:fixed;color:var(--tx);font-size:15px;line-height:1.45;padding-bottom:calc(72px + env(safe-area-inset-bottom))}
+svg.i{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+header{position:sticky;top:0;z-index:5;background:var(--card);border-bottom:1px solid var(--bd);padding:10px 14px;padding-top:calc(10px + env(safe-area-inset-top));display:flex;align-items:center;gap:10px;box-shadow:var(--sh)}
+.brand{flex:1;min-width:0}
+.brand h1{font-size:16px;margin:0;color:var(--pri);letter-spacing:.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand div{font-size:12px;color:var(--mut)}
+.who{font-size:12px;color:var(--mut);text-align:right;line-height:1.3}
+.icon-btn{border:1px solid var(--bd);background:var(--card);color:var(--mut);border-radius:10px;width:38px;height:38px;display:grid;place-items:center;cursor:pointer}
+.icon-btn.on{color:var(--pri);border-color:var(--pri)}
+main{max-width:1000px;margin:0 auto;padding:14px 12px}
 nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--bd);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom);z-index:6}
-nav button{flex:1;max-width:160px;border:0;background:none;padding:7px 2px 8px;font-size:12px;color:var(--mut);display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer}
-nav button .i{font-size:20px;line-height:1.2}
+nav button{flex:1;max-width:150px;border:0;background:none;padding:8px 2px 7px;font-size:11.5px;color:var(--mut);display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;font-family:inherit;position:relative}
 nav button.on{color:var(--pri);font-weight:600}
+nav button.on::before{content:"";position:absolute;top:0;left:28%;right:28%;height:2px;border-radius:2px;background:var(--pri)}
+nav .dot{position:absolute;top:4px;left:calc(50% + 8px);min-width:16px;height:16px;padding:0 4px;border-radius:8px;background:var(--bad);color:#fff;font-size:10px;line-height:16px;font-weight:700}
 h2{font-size:18px;margin:0 0 12px}
-h3{font-size:16px;margin:0 0 8px}
+h3{font-size:15px;margin:0 0 8px}
 h4{font-size:14px;margin:14px 0 6px}
-.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px 14px;margin-bottom:10px}
-.card.hl{border:2px solid var(--pri)}
+.sec{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;margin:18px 2px 8px;color:var(--tx)}
+.sec::before{content:"";width:3px;height:15px;border-radius:2px;background:var(--pri)}
+.sec .sp{flex:1}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px 14px;margin-bottom:10px;box-shadow:var(--sh)}
+.card.hl{border-color:var(--pri);box-shadow:0 0 0 3px var(--pri-s)}
+.card.soft{background:var(--card2)}
 .mut{color:var(--mut);font-size:13px}
 .sp{flex:1}
 .bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:8px 0 12px}
-.btn{border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:9px;padding:9px 14px;font-size:14px;cursor:pointer;font-family:inherit}
+.btn{border:1px solid var(--bd2);background:var(--card);color:var(--tx);border-radius:9px;padding:9px 14px;font-size:14px;cursor:pointer;font-family:inherit}
 .btn:active{transform:scale(.98)}
 .btn.pri{background:var(--pri);border-color:var(--pri);color:#fff;font-weight:600}
 .btn.bad{color:var(--bad);border-color:var(--bad)}
-.btn.sm{padding:6px 10px;font-size:13px}
-input,select,textarea{font:inherit;font-size:16px;color:var(--tx);background:var(--in);border:1px solid var(--bd);border-radius:9px;padding:9px 10px;width:100%}
+.btn.sm{padding:5px 10px;font-size:13px}
+.btn.ok{color:var(--ok);border-color:var(--ok);background:var(--ok-s)}
+input,select,textarea{font:inherit;font-size:16px;color:var(--tx);background:var(--in);border:1px solid var(--bd2);border-radius:9px;padding:9px 10px;width:100%}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 3px var(--pri-s)}
 textarea{resize:vertical}
 label{display:block;font-size:13px;color:var(--mut);margin-bottom:10px}
 label>input,label>select,label>textarea{margin-top:4px}
@@ -43,53 +82,117 @@ label>input,label>select,label>textarea{margin-top:4px}
 .filters input{grid-column:1/-1}
 @media(min-width:760px){.filters{grid-template-columns:2fr 1fr 1fr 1fr}.filters input{grid-column:auto}}
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
-.chip{border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:20px;padding:6px 12px;font-size:13px;cursor:pointer;font-family:inherit}
+.chip{border:1px solid var(--bd2);background:var(--card);color:var(--tx);border-radius:20px;padding:5px 12px;font-size:13px;cursor:pointer;font-family:inherit}
 .chip.on{background:var(--pri);color:#fff;border-color:var(--pri)}
-.chip.c-bad b{color:var(--bad)}.chip.c-warn b{color:var(--warn)}
+.chip b{color:var(--mut)}.chip.c-bad b{color:var(--bad)}.chip.c-warn b{color:var(--warn)}
 .chip.on b{color:#fff!important}
-.task{border-left:4px solid var(--bd);cursor:pointer}
+/* ô số liệu */
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:760px){.tiles{grid-template-columns:repeat(4,1fr)}}
+.tile{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:11px 13px;box-shadow:var(--sh);cursor:pointer;border-top:3px solid var(--c,var(--pri))}
+.tile .n{font-size:26px;font-weight:700;color:var(--c,var(--pri));line-height:1.15}
+.tile .l{font-size:12.5px;color:var(--mut)}
+/* công việc */
+.task{border-left:3px solid var(--bd2);cursor:pointer}
 .task.st-overdue,.task.st-late{border-left-color:var(--bad)}
 .task.st-soon{border-left-color:var(--warn)}
 .task.st-early{border-left-color:var(--early)}
 .task.st-ontime,.task.st-done{border-left-color:var(--ok)}
 .task.st-doing{border-left-color:var(--pri)}
 .row1{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:5px}
-.ttl{font-weight:600;margin-bottom:4px;white-space:pre-wrap;word-break:break-word}
-.badge{display:inline-block;font-size:12px;padding:2px 8px;border-radius:10px;font-weight:600;background:rgba(127,127,127,.12)}
-.b-overdue,.b-late{background:rgba(197,48,48,.13);color:var(--bad)}
-.b-soon{background:rgba(183,121,31,.15);color:var(--warn)}
-.b-early{background:rgba(14,116,144,.13);color:var(--early)}
-.b-ontime,.b-done{background:rgba(24,134,75,.13);color:var(--ok)}
-.b-doing{background:rgba(31,111,235,.12);color:var(--pri)}
-.q-tot{background:rgba(24,134,75,.13);color:var(--ok)}
-.q-dat{background:rgba(31,111,235,.12);color:var(--pri)}
-.q-kem{background:rgba(197,48,48,.13);color:var(--bad)}
-.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--bd);border-radius:12px;background:var(--card)}
+.ttl{font-weight:600;margin-bottom:3px;white-space:pre-wrap;word-break:break-word}
+.badge{display:inline-block;font-size:11.5px;padding:2px 8px;border-radius:10px;font-weight:600;background:var(--open-s);color:var(--mut)}
+.b-overdue,.b-late{background:var(--bad-s);color:var(--bad)}
+.b-soon{background:var(--warn-s);color:var(--warn)}
+.b-early{background:var(--early-s);color:var(--early)}
+.b-ontime,.b-done{background:var(--ok-s);color:var(--ok)}
+.b-doing{background:var(--pri-s);color:var(--pri)}
+.q-tot{background:var(--ok-s);color:var(--ok)}
+.q-dat{background:var(--pri-s);color:var(--pri)}
+.q-kem{background:var(--bad-s);color:var(--bad)}
+/* danh sách gọn */
+.list{background:var(--card);border:1px solid var(--bd);border-radius:12px;box-shadow:var(--sh);overflow:hidden;margin-bottom:10px}
+.li{display:flex;align-items:center;gap:10px;padding:10px 12px;border-top:1px solid var(--bd);cursor:pointer}
+.li:first-child{border-top:0}
+.li .mk{width:4px;align-self:stretch;border-radius:2px;background:var(--c,var(--bd2))}
+.li .body{flex:1;min-width:0}
+.li .t{font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.li .s{font-size:12.5px;color:var(--mut)}
+.grp{padding:6px 12px;font-size:12px;font-weight:700;color:var(--mut);background:var(--card2);border-top:1px solid var(--bd);text-transform:uppercase;letter-spacing:.4px}
+.grp:first-child{border-top:0}
+/* biểu đồ */
+.two{display:grid;gap:10px}
+@media(min-width:760px){.two{grid-template-columns:1fr 1fr}}
+.donut-wrap{display:flex;align-items:center;gap:14px}
+.donut{width:130px;height:130px;flex:none}
+.dn-big{font-size:24px;font-weight:700;fill:var(--tx)}
+.dn-sub{font-size:11px;fill:var(--mut)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:12.5px;color:var(--mut)}
+.legend.col{flex-direction:column;gap:5px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.sb-row{display:grid;grid-template-columns:minmax(80px,32%) 1fr 30px;align-items:center;gap:8px;padding:5px 0;cursor:pointer}
+.sb-name{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-track{height:14px;background:var(--track);border-radius:7px;overflow:hidden}
+.sb-bar{display:flex;height:100%;border-radius:7px;overflow:hidden}
+.sb-bar span{display:block;height:100%}
+.sb-bar span+span{border-left:1.5px solid var(--card)}
+.sb-n{font-size:12.5px;color:var(--mut);text-align:right}
+.trend{width:100%;height:auto;display:block}
+.trend .g{stroke:var(--bd);stroke-width:1}
+.trend{max-height:300px}
+.trend .gl{fill:var(--mut);font-size:10.5px}
+.trend .ln{fill:none;stroke:var(--pri);stroke-width:2;stroke-linejoin:round}
+.trend .ar{fill:var(--pri-s);stroke:none}
+.trend .pt{fill:var(--card);stroke:var(--pri);stroke-width:2}
+.trend .pv{fill:var(--tx);font-size:11px;font-weight:700}
+.rk{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--bd);cursor:pointer}
+.rk:first-child{border-top:0}
+.rk .no{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700;background:var(--pri-s);color:var(--pri);flex:none}
+.rk .nm{flex:1;min-width:0;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* bảng */
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--bd);border-radius:12px;background:var(--card);box-shadow:var(--sh)}
 table{border-collapse:collapse;width:100%;font-size:13px}
 th,td{padding:8px 9px;border-bottom:1px solid var(--bd);text-align:right;white-space:nowrap}
-th{background:rgba(127,127,127,.08);font-weight:600}
+tbody tr:last-child td{border-bottom:0}
+th{background:var(--card2);font-weight:600;color:var(--mut)}
 th:first-child,td:first-child{text-align:left;position:sticky;left:0;background:var(--card)}
-th:first-child{background:var(--card)}
-tr.tot td{font-weight:700}
+th:first-child{background:var(--card2)}
+td a{color:var(--pri);text-decoration:none;cursor:pointer}
+tr.tot td{font-weight:700;background:var(--card2)}
 .score{font-weight:700}
 .staff-row{display:flex;align-items:center;gap:8px;cursor:pointer}
 .staff-row .nm{font-weight:600}
-.mbg{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:20;display:flex;align-items:flex-end;justify-content:center}
-.modal{background:var(--card);width:100%;max-width:580px;max-height:92vh;overflow:auto;border-radius:16px 16px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom))}
+.av{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--pri-s);color:var(--pri);font-weight:700;font-size:14px;flex:none}
+.kv{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0}
+.kv div{background:var(--card2);border:1px solid var(--bd);border-radius:10px;padding:8px;text-align:center}
+.kv b{display:block;font-size:18px;color:var(--pri)}
+.kv span{font-size:11.5px;color:var(--mut)}
+.mbg{position:fixed;inset:0;background:rgba(15,20,30,.45);z-index:20;display:flex;align-items:flex-end;justify-content:center}
+.modal{background:var(--card);width:100%;max-width:600px;max-height:92vh;overflow:auto;border-radius:16px 16px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom));border:1px solid var(--bd)}
 @media(min-width:640px){.mbg{align-items:center}.modal{border-radius:16px}}
-.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translateX(-50%);background:#222;color:#fff;padding:10px 16px;border-radius:10px;font-size:14px;z-index:30;max-width:90vw;text-align:center;box-shadow:0 4px 16px rgba(0,0,0,.3)}
+.ext{background:var(--warn-s);border:1px solid var(--bd);border-radius:10px;padding:10px;margin-bottom:10px}
+.log{white-space:pre-wrap;font-size:12.5px;color:var(--mut);background:var(--card2);border:1px solid var(--bd);border-radius:9px;padding:8px;margin:4px 0 10px}
+.toast{position:fixed;left:50%;bottom:calc(86px + env(safe-area-inset-bottom));transform:translateX(-50%);background:#1f2733;color:#fff;padding:10px 16px;border-radius:10px;font-size:14px;z-index:30;max-width:90vw;text-align:center;box-shadow:0 6px 20px rgba(0,0,0,.25)}
 .chk{display:flex;gap:8px;align-items:flex-start;color:var(--tx);font-size:14px}
 .chk input{width:auto;margin-top:3px}
 .cf{border:1px solid var(--bd);border-radius:10px;padding:8px 10px;margin-bottom:8px}
 .cf .chk{margin:4px 0}
 .code{font-family:ui-monospace,Consolas,monospace;font-size:16px;font-weight:700;letter-spacing:1px;color:var(--pri)}
 ul{padding-left:20px;margin:6px 0}
-.empty{text-align:center;color:var(--mut);padding:30px 10px}
+.empty{text-align:center;color:var(--mut);padding:24px 10px;font-size:14px}
 .help li{margin-bottom:4px}
+.seg{display:inline-flex;border:1px solid var(--bd2);border-radius:9px;overflow:hidden}
+.seg button{border:0;background:var(--card);color:var(--tx);padding:7px 12px;font:inherit;font-size:13px;cursor:pointer}
+.seg button+button{border-left:1px solid var(--bd2)}
+.seg button.on{background:var(--pri);color:#fff}
 </style>
 </head>
 <body>
-<header><h1>📋 BCHQS XÃ AN PHÚ</h1><div class="who" id="who"></div></header>
+<header>
+  <div class="brand"><h1 id="appTitle">BCHQS xã An Phú</h1><div>Theo dõi công việc & KPI</div></div>
+  <div class="who" id="who"></div>
+  <button class="icon-btn" id="setBtn" title="Cài đặt" onclick="go('set')"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
+</header>
 <main id="main"></main>
 <nav id="nav"></nav>
 
@@ -97,8 +200,8 @@ ul{padding-left:20px;margin:6px 0}
 "use strict";
 /* ================== TIỆN ÍCH ================== */
 const K='kpi_tracker_v1', KU=K+'_undo';
-let db=null, tab='tasks', kpiP=null, imp=null;
-const ui={q:'',staff:'',st:'open',asg:''};
+let db=null, tab='home', kpiP=null, imp=null;
+const ui={q:'',staff:'',st:'open',asg:'',trend:''};
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,9);
@@ -106,12 +209,20 @@ const pad=n=>String(n).padStart(2,'0');
 const iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
 const today=()=>iso(new Date());
 const fmtD=s=>s?s.slice(8,10)+'/'+s.slice(5,7)+'/'+s.slice(0,4):'';
+const fmtDM=s=>s?s.slice(8,10)+'/'+s.slice(5,7):'';
 const fmtT=t=>{if(!t)return '';const d=new Date(t);return pad(d.getHours())+':'+pad(d.getMinutes())+' '+fmtD(iso(d))};
-const dayDiff=(a,b)=>Math.round((new Date(b+'T00:00:00')-new Date(a+'T00:00:00'))/864e5);
+const pd=s=>{const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)};
+const dayDiff=(a,b)=>Math.round((pd(b)-pd(a))/864e5);
+const addDays=(s,n)=>{const d=pd(s);d.setDate(d.getDate()+n);return iso(d)};
+const addMonths=(s,n)=>{const [y,m,d]=s.split('-').map(Number);const last=new Date(y,m-1+n+1,0).getDate();return iso(new Date(y,m-1+n,Math.min(d,last)))};
+const WD=['Chủ nhật','Thứ 2','Thứ 3','Thứ 4','Thứ 5','Thứ 6','Thứ 7'];
+const dayLabel=s=>{const n=dayDiff(today(),s);return n===0?'Hôm nay':n===1?'Ngày mai':WD[pd(s).getDay()]+', '+fmtDM(s)};
 const norm=s=>String(s||'').trim().toLowerCase().replace(/\s+/g,' ');
 const slug=s=>String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/đ/g,'d').replace(/Đ/g,'D').replace(/[^\w]+/g,'_').replace(/^_|_$/g,'')||'user';
 const clone=o=>JSON.parse(JSON.stringify(o));
-const defSettings=()=>({latePenalty:10,qTot:100,qDat:80,qKem:50});
+const initials=n=>{const p=String(n||'?').trim().split(/\s+/);return (p.length>1?p[p.length-2][0]+p[p.length-1][0]:p[0][0]||'?').toUpperCase()};
+const defSettings=()=>({latePenalty:10,qTot:100,qDat:80,qKem:50,days:7,origDue:true,theme:'',font:'',appTitle:'BCHQS xã An Phú'});
+const REP={'':'Không lặp',w:'Hằng tuần',m:'Hằng tháng',q:'Hằng quý'};
 
 function toast(msg,ms=2600){const t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),ms)}
 function load(){try{const s=localStorage.getItem(K);if(s)return JSON.parse(s)}catch(e){}return null}
@@ -126,7 +237,6 @@ const staffOf=id=>id?db.staff[canon(id)]:null;
 const live=o=>Object.values(o).filter(r=>!V(r,'deleted'));
 function lastEdit(r){let b=null;for(const k in r.f){const e=r.f[k];if(!b||e.t>b.t)b=e}return b?`Sửa lần cuối: ${esc(db.peers[b.d]||'?')} lúc ${fmtT(b.t)}`:''}
 function assigners(){const s=new Set(Object.values(db.peers));s.add(db.me.name);live(db.tasks).forEach(t=>{const a=V(t,'assigner');if(a)s.add(a)});return [...s].sort((a,b)=>a.localeCompare(b,'vi'))}
-
 function staffTree(){
   const list=live(db.staff).sort((a,b)=>V(a,'name').localeCompare(V(b,'name'),'vi'));
   const ids=new Set(list.map(r=>r.id)),kids={},roots=[];
@@ -139,8 +249,8 @@ function staffTree(){
 const staffName=id=>{const s=staffOf(id);return s?V(s,'name'):''};
 
 /* ================== TRẠNG THÁI & KPI ================== */
-function status(t){
-  const due=V(t,'due'),done=V(t,'done');
+function statusAt(t,due){
+  const done=V(t,'done');
   if(done){
     if(!due)return {k:'done',label:'Hoàn thành',d:0};
     const d=dayDiff(due,done);
@@ -154,28 +264,31 @@ function status(t){
   if(d<=2)return {k:'soon',label:d===0?'Hạn hôm nay':`Còn ${d} ngày`};
   return {k:'doing',label:`Còn ${d} ngày`};
 }
+const status=t=>statusAt(t,V(t,'due'));
+const kDue=t=>(db.settings.origDue&&V(t,'dueOrig'))||V(t,'due');
+const kStatus=t=>statusAt(t,kDue(t));
 function taskScore(t){
-  const s=status(t),S=db.settings;
+  const s=kStatus(t),S=db.settings;
   if(!V(t,'done'))return s.k==='overdue'?0:null;
   const base=s.k==='late'?Math.max(0,100-S.latePenalty*s.d):100;
   const q=V(t,'quality');const w=q==='Tốt'?S.qTot:q==='Đạt'?S.qDat:q==='Kém'?S.qKem:100;
   return base*w/100;
 }
 const rank=s=>s===null?'':s>=90?'Xuất sắc':s>=75?'Tốt':s>=50?'Đạt':'Chưa đạt';
-function inPeriod(t,from,to){const ref=V(t,'due')||V(t,'start');return ref&&ref>=from&&ref<=to}
+function inPeriod(t,from,to){const ref=kDue(t)||V(t,'start');return ref&&ref>=from&&ref<=to}
 function computeKPI(from,to){
   const R={};
   for(const t of live(db.tasks)){
     if(!inPeriod(t,from,to))continue;
     const sid=canon(V(t,'staff'))||'_';
     const r=R[sid]||(R[sid]={sid,total:0,done:0,early:0,ontime:0,late:0,overdue:0,open:0,dev:0,devN:0,tot:0,dat:0,kem:0,sc:0,scN:0});
-    r.total++;const s=status(t);
-    if(V(t,'done')){r.done++;if(s.k==='early')r.early++;else if(s.k==='late')r.late++;else r.ontime++;if(V(t,'due')){r.dev+=s.d;r.devN++}}
+    r.total++;const s=kStatus(t);
+    if(V(t,'done')){r.done++;if(s.k==='early')r.early++;else if(s.k==='late')r.late++;else r.ontime++;if(kDue(t)){r.dev+=s.d;r.devN++}}
     else if(s.k==='overdue')r.overdue++;else r.open++;
     const q=V(t,'quality');if(q==='Tốt')r.tot++;else if(q==='Đạt')r.dat++;else if(q==='Kém')r.kem++;
     const sc=taskScore(t);if(sc!==null){r.sc+=sc;r.scN++}
   }
-  return Object.values(R).map(fin).sort((a,b)=>(b.score??-1)-(a.score??-1));
+  return Object.values(R).map(fin).sort((a,b)=>(b.score??-1)-(a.score??-1)||b.total-a.total);
 }
 function fin(r){return {...r,avgDev:r.devN?r.dev/r.devN:null,score:r.scN?r.sc/r.scN:null,onRate:r.done?(r.early+r.ontime)/r.done:null}}
 function sumKPI(rows){const z={sid:'ALL',total:0,done:0,early:0,ontime:0,late:0,overdue:0,open:0,dev:0,devN:0,tot:0,dat:0,kem:0,sc:0,scN:0};rows.forEach(r=>{for(const k in z)if(k!=='sid')z[k]+=r[k]});return fin(z)}
@@ -187,6 +300,28 @@ function periodPreset(p){
   else{a=new Date(y,m,1);b=new Date(y,m+1,0)}
   return {from:iso(a),to:iso(b),p};
 }
+function kpiMonths(sid,n=6){
+  const d=new Date(),out=[];
+  for(let i=n-1;i>=0;i--){
+    const a=new Date(d.getFullYear(),d.getMonth()-i,1),b=new Date(d.getFullYear(),d.getMonth()-i+1,0);
+    const rows=computeKPI(iso(a),iso(b));const r=sid?rows.find(x=>x.sid===sid):sumKPI(rows);
+    out.push({label:'T'+(a.getMonth()+1),score:r&&r.score!==null?r.score:null,total:r?r.total:0});
+  }
+  return out;
+}
+
+/* ================== VIỆC LẶP LẠI ================== */
+function spawnNext(t){
+  const rep=V(t,'repeat');if(!rep||!V(t,'done')||V(t,'spawned'))return null;
+  const base=V(t,'dueOrig')||V(t,'due')||V(t,'done');
+  const nd=rep==='w'?addDays(base,7):addMonths(base,rep==='q'?3:1);
+  const series=V(t,'series')||t.id,id=series+'_'+nd;
+  setF(t,'spawned',true);
+  if(db.tasks[id])return null;
+  const r=mk({title:V(t,'title'),staff:V(t,'staff'),assigner:V(t,'assigner'),start:base,due:nd,done:'',quality:'',note:V(t,'note'),repeat:rep,series,deleted:false});
+  r.id=id;db.tasks[id]=r;return nd;
+}
+function afterDone(t){const nd=spawnNext(t);if(nd)toast(`Việc lặp lại: đã tạo kỳ tiếp theo, hạn ${fmtD(nd)}`,3500)}
 
 /* ================== GỘP DỮ LIỆU ================== */
 function mergeByT(a,b){for(const k in b.f){if(!a.f[k]||b.f[k].t>a.f[k].t)a.f[k]=b.f[k]}}
@@ -194,7 +329,6 @@ function doMerge(file,choices){
   const w=clone(db),me=w.me.id,peer=file.me.id;
   const myLast=w.lastImportFrom[peer]||0,theirLast=(file.lastImportFrom||{})[me]||0;
   const T=Date.now(),conflicts=[],dups=[],st={ns:0,us:0,nt:0,ut:0};
-  // 1) gộp bảng bí danh (nhân viên đã được gộp)
   for(const [a,b] of Object.entries(file.aliases||{})){if(!w.aliases[a]&&canon(b,w.aliases)!==a)w.aliases[a]=b}
   for(const key of Object.keys(w.staff)){const c=canon(key,w.aliases);if(c!==key){const L=w.staff[key];delete w.staff[key];L.id=c;if(w.staff[c])mergeByT(w.staff[c],L);else w.staff[c]=L}}
   const mergeRec=(type,L,R)=>{
@@ -213,7 +347,6 @@ function doMerge(file,choices){
     }
     return ch;
   };
-  // 2) nhân viên
   const rset=new Set(Object.keys(file.staff||{}).map(id=>canon(id,w.aliases)));
   for(const R0 of Object.values(file.staff||{})){
     const R=clone(R0);const rid=canon(R.id,w.aliases);R.id=rid;
@@ -231,7 +364,6 @@ function doMerge(file,choices){
     }
     w.staff[rid]=R;st.ns++;
   }
-  // 3) công việc
   for(const R0 of Object.values(file.tasks||{})){
     const R=clone(R0),L=w.tasks[R.id];
     if(L){if(mergeRec('t',L,R))st.ut++}else{w.tasks[R.id]=R;st.nt++}
@@ -306,12 +438,12 @@ function makeXlsx(sheets){
 }
 const r1=x=>x===null||x===undefined?'':Math.round(x*10)/10;
 function taskRows(list){
-  const rows=[['STT','Nội dung công việc','Người thực hiện','Chức danh','Người giao','Ngày giao','Hạn hoàn thành','Ngày hoàn thành','Trạng thái','Lệch hạn (ngày)','Đánh giá','Điểm','Ghi chú']];
-  list.forEach((t,i)=>{const s=status(t),st=staffOf(V(t,'staff')),sc=taskScore(t);
-    rows.push([i+1,V(t,'title'),st?V(st,'name'):'',st?V(st,'pos'):'',V(t,'assigner'),fmtD(V(t,'start')),fmtD(V(t,'due')),fmtD(V(t,'done')),s.label,V(t,'done')&&V(t,'due')?s.d:'',V(t,'quality'),sc===null?'':r1(sc),V(t,'note')])});
+  const rows=[['STT','Nội dung công việc','Người thực hiện','Chức danh','Người giao','Ngày giao','Hạn gốc','Hạn hiện tại','Ngày hoàn thành','Trạng thái (tính KPI)','Lệch hạn (ngày)','Đánh giá','Điểm','Lặp lại','Gia hạn','Ghi chú']];
+  list.forEach((t,i)=>{const s=kStatus(t),st=staffOf(V(t,'staff')),sc=taskScore(t);
+    rows.push([i+1,V(t,'title'),st?V(st,'name'):'',st?V(st,'pos'):'',V(t,'assigner'),fmtD(V(t,'start')),fmtD(V(t,'dueOrig')||V(t,'due')),fmtD(V(t,'due')),fmtD(V(t,'done')),s.label,V(t,'done')&&kDue(t)?s.d:'',V(t,'quality'),sc===null?'':r1(sc),V(t,'repeat')?REP[V(t,'repeat')]:'',V(t,'extLog'),V(t,'note')])});
   return rows;
 }
-const taskWidths=[5,45,22,16,14,12,14,15,20,14,10,8,30];
+const taskWidths=[5,45,22,16,14,12,12,12,15,20,13,10,8,12,36,30];
 function exportTasksXlsx(){
   const list=filteredTasks();if(!list.length){toast('Không có công việc nào để xuất');return}
   deliver(makeXlsx([{name:'Cong viec',rows:taskRows(list),widths:taskWidths,bold:[0]}]),`CongViec_${today()}.xlsx`,true);
@@ -321,9 +453,9 @@ function exportKpiXlsx(){
   const head=['Nhân viên','Chức danh','Đơn vị','Tổng việc','Đã xong','Xong sớm','Đúng hạn','Xong trễ','Quá hạn chưa xong','Đang làm','Tỷ lệ đúng hạn (%)','Lệch hạn TB (ngày)','Tốt','Đạt','Kém','Điểm KPI','Xếp loại'];
   const line=r=>{const s=r.sid==='ALL'?null:staffOf(r.sid);return [r.sid==='ALL'?'TỔNG CỘNG':r.sid==='_'?'(Chưa giao người)':s?V(s,'name'):'(Đã xoá)',s?V(s,'pos'):'',s?V(s,'unit'):'',r.total,r.done,r.early,r.ontime,r.late,r.overdue,r.open,r.onRate===null?'':Math.round(r.onRate*100),r1(r.avgDev),r.tot,r.dat,r.kem,r.score===null?'':Math.round(r.score),rank(r.score)]};
   const S=db.settings;
-  const k=[[`BÁO CÁO KPI từ ${fmtD(from)} đến ${fmtD(to)}`],[`Xuất bởi ${db.me.name} lúc ${fmtT(Date.now())}`],head,...rows.map(line),line(sumKPI(rows)),[],
-    [`Cách tính: việc xong đúng/sớm hạn = 100 điểm; trễ mỗi ngày trừ ${S.latePenalty} điểm; nhân hệ số đánh giá Tốt ${S.qTot}% / Đạt ${S.qDat}% / Kém ${S.qKem}%; việc quá hạn chưa xong = 0 điểm; việc chưa đến hạn không tính.`]];
-  const list=live(db.tasks).filter(t=>inPeriod(t,from,to)).sort((a,b)=>(V(a,'due')||'').localeCompare(V(b,'due')||''));
+  const k=[[`${S.appTitle} – BÁO CÁO KPI từ ${fmtD(from)} đến ${fmtD(to)}`],[`Xuất bởi ${db.me.name} lúc ${fmtT(Date.now())}`],head,...rows.map(line),line(sumKPI(rows)),[],
+    [`Cách tính: việc xong đúng/sớm hạn = 100 điểm; trễ mỗi ngày trừ ${S.latePenalty} điểm; nhân hệ số đánh giá Tốt ${S.qTot}% / Đạt ${S.qDat}% / Kém ${S.qKem}%; việc quá hạn chưa xong = 0 điểm; việc chưa đến hạn không tính. Hạn dùng để tính: ${S.origDue?'hạn gốc (không tính gia hạn)':'hạn sau gia hạn'}.`]];
+  const list=live(db.tasks).filter(t=>inPeriod(t,from,to)).sort((a,b)=>(kDue(a)||'').localeCompare(kDue(b)||''));
   deliver(makeXlsx([{name:'KPI',rows:k,widths:[24,16,16,9,9,9,9,9,12,9,14,14,6,6,6,10,11],bold:[0,2,3+rows.length]},{name:'Chi tiet cong viec',rows:taskRows(list),widths:taskWidths,bold:[0]}]),`KPI_${from}_${to}.xlsx`,true);
 }
 function exportSync(share){
@@ -339,14 +471,61 @@ function readJson(input,cb){
   rd.readAsText(file);
 }
 
+/* ================== BIỂU ĐỒ (SVG/HTML, không cần thư viện) ================== */
+const SEG=[['early','Xong sớm','var(--early)'],['ontime','Đúng hạn','var(--ok)'],['late','Xong trễ','var(--warn)'],['overdue','Quá hạn','var(--bad)'],['open','Đang làm','var(--open)']];
+const legend=(cls='')=>`<div class="legend ${cls}">${SEG.map(([k,l,c])=>`<span><i style="background:${c}"></i>${l}</span>`).join('')}</div>`;
+function donut(segs,center,sub){
+  const total=segs.reduce((a,s)=>a+s.v,0),R=52,C=2*Math.PI*R;let off=0;
+  const arcs=total?segs.filter(s=>s.v>0).map(s=>{const len=C*s.v/total;const a=`<circle r="${R}" cx="70" cy="70" fill="none" stroke="${s.c}" stroke-width="15" stroke-dasharray="${len} ${C-len}" stroke-dashoffset="${-off}" transform="rotate(-90 70 70)"/>`;off+=len;return a}).join(''):'';
+  return `<svg viewBox="0 0 140 140" class="donut"><circle r="${R}" cx="70" cy="70" fill="none" stroke="var(--track)" stroke-width="15"/>${arcs}<text x="70" y="72" text-anchor="middle" class="dn-big">${center}</text><text x="70" y="91" text-anchor="middle" class="dn-sub">${sub}</text></svg>`;
+}
+function stackBars(rows){
+  if(!rows.length)return '<div class="empty">Chưa có dữ liệu</div>';
+  const max=Math.max(1,...rows.map(r=>r.total));
+  return rows.map(r=>{const nm=r.sid==='_'?'(Chưa giao)':staffName(r.sid)||'(?)';
+    return `<div class="sb-row" ${r.sid!=='_'?`onclick="openProfile('${r.sid}')"`:''}><div class="sb-name" title="${esc(nm)}">${esc(nm)}</div>
+    <div class="sb-track"><div class="sb-bar" style="width:${r.total/max*100}%">${SEG.map(([k,l,c])=>r[k]?`<span style="flex:${r[k]};background:${c}" title="${l}: ${r[k]}"></span>`:'').join('')}</div></div><div class="sb-n">${r.total}</div></div>`}).join('')+`<div style="margin-top:8px">${legend()}</div>`;
+}
+function trendSvg(pts){
+  const W=360,H=190,L=28,Rr=14,T=26,B=24,n=pts.length;
+  const x=i=>L+(W-L-Rr)*(n===1?.5:i/(n-1)),y=v=>T+(H-T-B)*(1-v/100);
+  let g='';[0,50,75,90,100].forEach(v=>{g+=`<line class="g" x1="${L}" x2="${W-Rr}" y1="${y(v)}" y2="${y(v)}" ${v===75||v===90?'stroke-dasharray="4 4"':''}/><text class="gl" x="${L-5}" y="${y(v)+4}" text-anchor="end">${v}</text>`});
+  let lab='';pts.forEach((p,i)=>{lab+=`<text class="gl" x="${x(i)}" y="${H-8}" text-anchor="middle">${p.label}</text>`});
+  let segs=[],cur=[];pts.forEach((p,i)=>{if(p.score===null){if(cur.length)segs.push(cur);cur=[]}else cur.push([x(i),y(p.score)])});if(cur.length)segs.push(cur);
+  const line=segs.map(s=>`<path class="ln" d="M${s.map(q=>q.join(',')).join('L')}"/>`).join('');
+  const area=segs.filter(s=>s.length>1).map(s=>`<path class="ar" d="M${s[0][0]},${y(0)}L${s.map(q=>q.join(',')).join('L')}L${s[s.length-1][0]},${y(0)}Z"/>`).join('');
+  const dots=pts.map((p,i)=>p.score===null?'':`<circle class="pt" cx="${x(i)}" cy="${y(p.score)}" r="3.5"/><text class="pv" x="${x(i)}" y="${y(p.score)-9}" text-anchor="middle">${Math.round(p.score)}</text>`).join('');
+  const none=pts.every(p=>p.score===null)?`<text class="gl" x="${W/2}" y="${H/2}" text-anchor="middle">Chưa có dữ liệu</text>`:'';
+  return `<svg class="trend" viewBox="0 0 ${W} ${H}">${g}${area}${line}${dots}${lab}${none}</svg>`;
+}
+
 /* ================== GIAO DIỆN CHUNG ================== */
-const TABS=[['tasks','📝','Công việc'],['staff','👥','Nhân sự'],['kpi','📊','KPI'],['sync','🔄','Đồng bộ'],['set','⚙️','Cài đặt']];
+const IC={
+  home:'<path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+  tasks:'<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>',
+  staff:'<circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.4"/><path d="M16.5 14.2c2.6.3 4.5 2.6 4.5 5.8"/>',
+  kpi:'<path d="M3 21h18"/><path d="M6 17v-5M11 17V7M16 17v-8M21 17V4" transform="translate(-1 0)"/>',
+  sync:'<path d="M4 12a8 8 0 0 1 13.7-5.6L20 8.5M20 4v4.5h-4.5M20 12a8 8 0 0 1-13.7 5.6L4 15.5M4 20v-4.5h4.5"/>'
+};
+const TABS=[['home','Tổng quan'],['tasks','Công việc'],['staff','Nhân sự'],['kpi','KPI'],['sync','Đồng bộ']];
 function go(t){tab=t;render();window.scrollTo(0,0)}
+function applyLook(){
+  const S=db?db.settings:defSettings(),h=document.documentElement;
+  if(S.theme)h.dataset.theme=S.theme;else delete h.dataset.theme;
+  if(S.font)h.dataset.font=S.font;else delete h.dataset.font;
+  $('#appTitle').textContent=S.appTitle||'Theo dõi công việc';
+  document.title=(S.appTitle?S.appTitle+' – ':'')+'Công việc & KPI';
+}
+function overdueCount(){const td=today();return live(db.tasks).filter(t=>!V(t,'done')&&V(t,'due')&&V(t,'due')<td).length}
 function render(){
+  applyLook();
   if(!db){renderSetup();return}
-  $('#who').innerHTML=`👤 ${esc(db.me.name)}<br>${fmtD(today())}`;
-  $('#nav').innerHTML=TABS.map(([k,i,l])=>`<button class="${tab===k?'on':''}" onclick="go('${k}')"><span class="i">${i}</span>${l}</button>`).join('');
-  ({tasks:renderTasks,staff:renderStaff,kpi:renderKPI,sync:renderSync,set:renderSet})[tab]();
+  $('#who').innerHTML=`${esc(db.me.name)}<br>${fmtD(today())}`;
+  $('#setBtn').style.display='';$('#setBtn').classList.toggle('on',tab==='set');
+  const od=overdueCount();
+  $('#nav').innerHTML=TABS.map(([k,l])=>`<button class="${tab===k?'on':''}" onclick="go('${k}')"><svg class="i" viewBox="0 0 24 24">${IC[k]}</svg>${l}${k==='tasks'&&od?`<span class="dot">${od}</span>`:''}</button>`).join('');
+  try{if(navigator.setAppBadge){od?navigator.setAppBadge(od):navigator.clearAppBadge()}}catch(e){}
+  ({home:renderHome,tasks:renderTasks,staff:renderStaff,kpi:renderKPI,sync:renderSync,set:renderSet})[tab]();
 }
 function modal(html,mount){
   const bg=document.createElement('div');bg.className='mbg';bg.innerHTML=`<div class="modal">${html}</div>`;
@@ -361,7 +540,7 @@ function restoreFrom(f){
   db.peers[db.me.id]=db.me.name;save();
 }
 function renderSetup(){
-  $('#nav').innerHTML='';$('#who').textContent='';
+  $('#nav').innerHTML='';$('#who').textContent='';$('#setBtn').style.display='none';
   $('#main').innerHTML=`<div class="card"><h2>Bắt đầu sử dụng</h2>
   <p class="mut">Mỗi máy đặt một tên riêng để phân biệt khi đồng bộ (VD: "Chỉ huy A", "Chỉ huy B").</p>
   <label>Tên của bạn<input id="s_name" placeholder="VD: Chỉ huy A"></label>
@@ -376,31 +555,84 @@ function startNew(){
   db.peers[db.me.id]=n;save();tab='staff';render();
 }
 
+/* ================== TAB TỔNG QUAN ================== */
+function liTask(t){
+  const s=status(t),st=staffOf(V(t,'staff'));
+  const c={overdue:'var(--bad)',soon:'var(--warn)',doing:'var(--pri)',late:'var(--warn)',early:'var(--early)'}[s.k]||'var(--ok)';
+  return `<div class="li" onclick="openTask('${t.id}')"><div class="mk" style="--c:${c}"></div>
+    <div class="body"><div class="t">${esc(V(t,'title'))}</div><div class="s">${st?esc(V(st,'name')):'<i>chưa chọn người</i>'} · <span style="color:${c}">${s.label}</span>${V(t,'dueOrig')?' · đã gia hạn':''}</div></div>
+    ${!V(t,'done')?`<button class="btn sm ok" onclick="event.stopPropagation();quickDone('${t.id}')">✓</button>`:''}</div>`;
+}
+function setDays(n){db.settings.days=n;save();render()}
+function renderHome(){
+  const all=live(db.tasks),td=today(),X=db.settings.days||7,lim=addDays(td,X);
+  const open=all.filter(t=>!V(t,'done')),byDue=(a,b)=>(V(a,'due')||'').localeCompare(V(b,'due')||'');
+  const overdue=open.filter(t=>V(t,'due')&&V(t,'due')<td).sort(byDue);
+  const dueToday=open.filter(t=>V(t,'due')===td);
+  const upcoming=open.filter(t=>V(t,'due')&&V(t,'due')>=td&&V(t,'due')<=lim).sort(byDue);
+  const m=periodPreset('m'),rows=computeKPI(m.from,m.to),tot=sumKPI(rows);
+  const doneMonth=all.filter(t=>V(t,'done')>=m.from&&V(t,'done')<=m.to).length;
+  if(!live(db.staff).length&&!all.length){
+    $('#main').innerHTML=`<div class="card hl"><h3>Chào ${esc(db.me.name)} 👋</h3><p class="mut">Bắt đầu bằng cách thêm danh sách nhân viên, sau đó giao việc. Nếu người kia đã nhập danh sách, hãy nhận file của họ ở tab <b>Đồng bộ</b>.</p>
+    <div class="bar"><button class="btn pri" onclick="go('staff')">Thêm nhân viên</button><button class="btn" onclick="go('sync')">Nhận file đồng bộ</button></div></div>`;return;
+  }
+  // Sắp đến hạn, nhóm theo ngày
+  let up='',last='';upcoming.forEach(t=>{const d=V(t,'due');if(d!==last){up+=`<div class="grp">${dayLabel(d)}</div>`;last=d}up+=liTask(t)});
+  // xếp hạng
+  const best=rows.filter(r=>r.sid!=='_'&&r.score!==null).slice(0,3);
+  const load={};open.forEach(t=>{const s=canon(V(t,'staff'));if(!s)return;const o=load[s]||(load[s]={sid:s,o:0,x:0});o.o++;if(V(t,'due')&&V(t,'due')<td)o.x++});
+  const busy=Object.values(load).sort((a,b)=>b.x-a.x||b.o-a.o).slice(0,3);
+  const pct=tot.onRate===null?'—':Math.round(tot.onRate*100)+'%';
+  $('#main').innerHTML=`
+  <div class="tiles">
+    <div class="tile" style="--c:var(--bad)" onclick="ui.st='overdue';ui.staff='';go('tasks')"><div class="n">${overdue.length}</div><div class="l">Quá hạn</div></div>
+    <div class="tile" style="--c:var(--warn)" onclick="ui.st='today';ui.staff='';go('tasks')"><div class="n">${dueToday.length}</div><div class="l">Đến hạn hôm nay</div></div>
+    <div class="tile" style="--c:var(--pri)" onclick="ui.st='next';ui.staff='';go('tasks')"><div class="n">${upcoming.length}</div><div class="l">Phải xong trong ${X} ngày</div></div>
+    <div class="tile" style="--c:var(--ok)" onclick="go('kpi')"><div class="n">${doneMonth}</div><div class="l">Đã xong tháng này</div></div>
+  </div>
+  ${overdue.length?`<div class="sec">Quá hạn chưa xong<span class="sp"></span><span class="mut">${overdue.length} việc</span></div><div class="list">${overdue.slice(0,8).map(liTask).join('')}${overdue.length>8?`<div class="li" onclick="ui.st='overdue';go('tasks')"><div class="body mut">Xem tất cả ${overdue.length} việc quá hạn →</div></div>`:''}</div>`:''}
+  <div class="sec">Phải hoàn thành trong<span class="sp"></span></div>
+  <div class="chips">${[3,7,14,30].map(n=>`<button class="chip ${X===n?'on':''}" onclick="setDays(${n})">${n} ngày</button>`).join('')}</div>
+  <div class="list">${up||`<div class="empty">Không có việc nào đến hạn trong ${X} ngày tới.</div>`}</div>
+  <div class="sec">Tháng ${new Date().getMonth()+1}</div>
+  <div class="two">
+    <div class="card"><div class="donut-wrap">${donut([{v:tot.early,c:'var(--early)'},{v:tot.ontime,c:'var(--ok)'},{v:tot.late,c:'var(--warn)'},{v:tot.overdue,c:'var(--bad)'},{v:tot.open,c:'var(--open)'}],pct,'đúng hạn')}
+      <div><div class="legend col">${SEG.map(([k,l,c])=>`<span><i style="background:${c}"></i>${l}: <b style="color:var(--tx)">${tot[k]}</b></span>`).join('')}</div>
+      <div class="mut" style="margin-top:6px">Điểm KPI đơn vị: <b style="color:var(--pri)">${tot.score===null?'—':Math.round(tot.score)}</b></div></div></div></div>
+    <div class="card"><h3>Hoàn thành tốt nhất</h3>${best.length?best.map((r,i)=>`<div class="rk" onclick="openProfile('${r.sid}')"><span class="no">${i+1}</span><span class="nm">${esc(staffName(r.sid))}</span><b style="color:var(--ok)">${Math.round(r.score)}</b></div>`).join(''):'<div class="mut">Chưa có việc hoàn thành trong tháng.</div>'}
+      <h3 style="margin-top:12px">Đang tồn nhiều việc</h3>${busy.length?busy.map(o=>`<div class="rk" onclick="openProfile('${o.sid}')"><span class="no" style="background:var(--warn-s);color:var(--warn)">${o.o}</span><span class="nm">${esc(staffName(o.sid))}</span>${o.x?`<span class="badge b-overdue">${o.x} quá hạn</span>`:''}</div>`).join(''):'<div class="mut">Không ai tồn việc.</div>'}</div>
+  </div>
+  <div class="bar"><button class="btn pri" onclick="openTask()">＋ Giao việc mới</button></div>`;
+}
+
 /* ================== TAB CÔNG VIỆC ================== */
-const ST_OPTS=[['open','Chưa hoàn thành'],['overdue','Quá hạn'],['soon','Sắp đến hạn (≤2 ngày)'],['done','Đã hoàn thành'],['late','Hoàn thành trễ'],['all','Tất cả']];
+const ST_OPTS=()=>[['open','Chưa hoàn thành'],['overdue','Quá hạn'],['today','Đến hạn hôm nay'],['next',`Phải xong trong ${db.settings.days||7} ngày`],['done','Đã hoàn thành'],['late','Hoàn thành trễ'],['ext','Đã gia hạn'],['rep','Việc lặp lại'],['all','Tất cả']];
 function setSt(s){ui.st=s;render()}
 function filteredTasks(){
-  const q=norm(ui.q);
+  const q=norm(ui.q),td=today(),lim=addDays(td,db.settings.days||7);
   return live(db.tasks).filter(t=>{
-    const s=status(t);
+    const s=status(t),due=V(t,'due'),done=V(t,'done');
     if(ui.staff&&canon(V(t,'staff'))!==ui.staff)return false;
     if(ui.asg&&V(t,'assigner')!==ui.asg)return false;
     if(q){const hay=norm(V(t,'title')+' '+V(t,'note')+' '+staffName(V(t,'staff')));if(!hay.includes(q))return false}
-    switch(ui.st){case 'open':return !V(t,'done');case 'overdue':return s.k==='overdue';case 'soon':return s.k==='soon';case 'done':return !!V(t,'done');case 'late':return s.k==='late';default:return true}
+    switch(ui.st){case 'open':return !done;case 'overdue':return s.k==='overdue';case 'today':return !done&&due===td;
+      case 'next':return !done&&due&&due>=td&&due<=lim;case 'done':return !!done;case 'late':return kStatus(t).k==='late';
+      case 'ext':return !!V(t,'dueOrig');case 'rep':return !!V(t,'repeat');default:return true}
   }).sort((a,b)=>{const da=V(a,'done'),dd=V(b,'done');if(!da&&dd)return -1;if(da&&!dd)return 1;if(!da)return (V(a,'due')||'9999').localeCompare(V(b,'due')||'9999');return dd.localeCompare(da)});
 }
 function renderTasks(){
-  const tree=staffTree(),asgs=assigners();let open=0,over=0,soon=0;
-  live(db.tasks).forEach(t=>{if(!V(t,'done')){open++;const k=status(t).k;if(k==='overdue')over++;else if(k==='soon')soon++}});
+  const tree=staffTree(),asgs=assigners(),td=today();let open=0,over=0,tday=0;
+  live(db.tasks).forEach(t=>{if(!V(t,'done')){open++;const d=V(t,'due');if(d&&d<td)over++;else if(d===td)tday++}});
   $('#main').innerHTML=`
   <div class="chips">
     <button class="chip ${ui.st==='open'?'on':''}" onclick="setSt('open')">Chưa xong <b>${open}</b></button>
     <button class="chip c-bad ${ui.st==='overdue'?'on':''}" onclick="setSt('overdue')">Quá hạn <b>${over}</b></button>
-    <button class="chip c-warn ${ui.st==='soon'?'on':''}" onclick="setSt('soon')">Sắp đến hạn <b>${soon}</b></button>
+    <button class="chip c-warn ${ui.st==='today'?'on':''}" onclick="setSt('today')">Hôm nay <b>${tday}</b></button>
+    <button class="chip ${ui.st==='next'?'on':''}" onclick="setSt('next')">${db.settings.days||7} ngày tới</button>
   </div>
   <div class="filters">
-    <input id="fq" type="search" placeholder="🔍 Tìm nội dung, tên người..." value="${esc(ui.q)}">
-    <select id="fst">${ST_OPTS.map(([k,l])=>`<option value="${k}" ${ui.st===k?'selected':''}>${l}</option>`).join('')}</select>
+    <input id="fq" type="search" placeholder="Tìm nội dung, tên người..." value="${esc(ui.q)}">
+    <select id="fst">${ST_OPTS().map(([k,l])=>`<option value="${k}" ${ui.st===k?'selected':''}>${l}</option>`).join('')}</select>
     <select id="fsf"><option value="">Tất cả nhân viên</option>${tree.map(({r,lv})=>`<option value="${r.id}" ${ui.staff===r.id?'selected':''}>${'— '.repeat(lv)}${esc(V(r,'name'))}</option>`).join('')}</select>
     <select id="fas"><option value="">Mọi người giao</option>${asgs.map(a=>`<option ${ui.asg===a?'selected':''}>${esc(a)}</option>`).join('')}</select>
   </div>
@@ -416,63 +648,105 @@ const QC={'Tốt':'tot','Đạt':'dat','Kém':'kem'};
 function renderTaskList(){
   const list=filteredTasks(),el=$('#tlist');
   if(!list.length){el.innerHTML=`<div class="empty">${live(db.staff).length?'Không có công việc nào phù hợp.':'Chưa có nhân viên. Vào tab <b>Nhân sự</b> để thêm trước.'}</div>`;return}
-  el.innerHTML=`<div class="mut" style="margin-bottom:6px">${list.length} công việc</div>`+list.map(t=>{
-    const s=status(t),q=V(t,'quality'),done=V(t,'done'),st=staffOf(V(t,'staff'));
+  el.innerHTML=`<div class="mut" style="margin:0 2px 6px">${list.length} công việc</div>`+list.map(t=>{
+    const s=status(t),q=V(t,'quality'),done=V(t,'done'),st=staffOf(V(t,'staff')),ks=kStatus(t);
     return `<div class="card task st-${s.k}" onclick="openTask('${t.id}')">
-      <div class="row1"><span class="badge b-${s.k}">${s.label}</span>${q?`<span class="badge q-${QC[q]}">${q}</span>`:''}<span class="sp"></span><span class="mut">Giao: ${esc(V(t,'assigner'))}</span></div>
+      <div class="row1"><span class="badge b-${s.k}">${s.label}</span>${done&&V(t,'dueOrig')&&ks.k!==s.k?`<span class="badge b-${ks.k}">KPI: ${ks.label}</span>`:''}${q?`<span class="badge q-${QC[q]}">${q}</span>`:''}${V(t,'dueOrig')?'<span class="badge b-soon">Đã gia hạn</span>':''}${V(t,'repeat')?`<span class="badge">↻ ${REP[V(t,'repeat')]}</span>`:''}<span class="sp"></span><span class="mut">Giao: ${esc(V(t,'assigner'))}</span></div>
       <div class="ttl">${esc(V(t,'title'))}</div>
-      <div class="mut">👤 ${st?esc(V(st,'name'))+(V(st,'pos')?' · '+esc(V(st,'pos')):''):'<i>chưa chọn người</i>'}</div>
-      <div class="mut">Giao ${fmtD(V(t,'start'))||'—'} · Hạn ${fmtD(V(t,'due'))||'—'}${done?' · Xong '+fmtD(done):''}</div>
-      ${!done?`<div style="margin-top:8px"><button class="btn sm" onclick="event.stopPropagation();quickDone('${t.id}')">✓ Hoàn thành hôm nay</button></div>`:''}
+      <div class="mut">${st?esc(V(st,'name'))+(V(st,'pos')?' · '+esc(V(st,'pos')):''):'<i>chưa chọn người</i>'}</div>
+      <div class="mut">Giao ${fmtD(V(t,'start'))||'—'} · Hạn ${fmtD(V(t,'due'))||'—'}${V(t,'dueOrig')?` (gốc ${fmtD(V(t,'dueOrig'))})`:''}${done?' · Xong '+fmtD(done):''}</div>
+      ${!done?`<div style="margin-top:8px"><button class="btn sm ok" onclick="event.stopPropagation();quickDone('${t.id}')">✓ Hoàn thành hôm nay</button></div>`:''}
     </div>`}).join('');
 }
-function quickDone(id){setF(db.tasks[id],'done',today());save();render();toast('Đã hoàn thành. Bấm vào việc để đánh giá Tốt/Đạt/Kém.')}
-function openTask(id){
+function quickDone(id){const t=db.tasks[id];setF(t,'done',today());afterDone(t);save();render();toast('Đã hoàn thành. Bấm vào việc để đánh giá Tốt/Đạt/Kém.')}
+function openTask(id,presetStaff){
   const t=id?db.tasks[id]:null,g=k=>t?V(t,k):'';
-  const tree=staffTree(),asgs=assigners(),cur=t?g('assigner'):db.me.name,sid=canon(g('staff'));
+  const tree=staffTree(),asgs=assigners(),cur=t?g('assigner'):db.me.name,sid=t?canon(g('staff')):(presetStaff||'');
   if(cur&&!asgs.includes(cur))asgs.push(cur);
   let opts=tree.map(({r,lv})=>`<option value="${r.id}" ${sid===r.id?'selected':''}>${'— '.repeat(lv)}${esc(V(r,'name'))}${V(r,'pos')?' ('+esc(V(r,'pos'))+')':''}</option>`).join('');
   if(sid&&!tree.some(x=>x.r.id===sid))opts+=`<option value="${sid}" selected>(đã xoá) ${esc(staffName(sid))}</option>`;
+  const canExt=t&&!g('done')&&g('due');
   modal(`<h2>${t?'Sửa công việc':'Giao việc mới'}</h2>
     <label>Nội dung công việc *<textarea id="m_title" rows="3">${esc(g('title'))}</textarea></label>
     <label>Người thực hiện<select id="m_staff"><option value="">— Chưa chọn —</option>${opts}</select></label>
-    <label>Người giao việc<select id="m_asg">${asgs.map(a=>`<option ${a===cur?'selected':''}>${esc(a)}</option>`).join('')}</select></label>
     <div class="grid2">
+      <label>Người giao việc<select id="m_asg">${asgs.map(a=>`<option ${a===cur?'selected':''}>${esc(a)}</option>`).join('')}</select></label>
+      <label>Lặp lại<select id="m_rep">${Object.entries(REP).map(([k,l])=>`<option value="${k}" ${g('repeat')===k?'selected':''}>${l}</option>`).join('')}</select></label>
       <label>Ngày giao<input type="date" id="m_start" value="${t?g('start'):today()}"></label>
-      <label>Hạn hoàn thành<input type="date" id="m_due" value="${g('due')}"></label>
+      <label>Hạn hoàn thành${g('dueOrig')?` <span style="color:var(--warn)">(gốc ${fmtD(g('dueOrig'))})</span>`:''}<input type="date" id="m_due" value="${g('due')}" ${g('dueOrig')?'disabled':''}></label>
     </div>
+    ${canExt?`<div class="bar" style="margin-top:-4px"><button class="btn sm" type="button" id="b_ext">Gia hạn có lý do</button></div><div id="extBox"></div>`:''}
+    ${g('extLog')?`<div class="mut">Lịch sử gia hạn:</div><div class="log">${esc(g('extLog'))}</div>`:''}
     <label>Ngày hoàn thành thực tế<div class="inl"><input type="date" id="m_done" value="${g('done')}"><button class="btn sm" type="button" id="b_today">Hôm nay</button><button class="btn sm" type="button" id="b_clr">Xoá</button></div></label>
     <label>Đánh giá chất lượng<select id="m_q">${['','Tốt','Đạt','Kém'].map(q=>`<option value="${q}" ${g('quality')===q?'selected':''}>${q||'— Chưa đánh giá —'}</option>`).join('')}</select></label>
     <label>Ghi chú<textarea id="m_note" rows="2">${esc(g('note'))}</textarea></label>
     ${t?`<p class="mut">${lastEdit(t)}</p>`:''}
     <div class="bar"><button class="btn pri" id="b_save">Lưu</button><button class="btn" id="b_cancel">Huỷ</button><span class="sp"></span>${t?'<button class="btn bad" id="b_del">Xoá</button>':''}</div>`,
   (m,close)=>{
-    m.querySelector('#b_today').onclick=()=>{m.querySelector('#m_done').value=today()};
-    m.querySelector('#b_clr').onclick=()=>{m.querySelector('#m_done').value=''};
-    m.querySelector('#b_cancel').onclick=close;
-    if(t)m.querySelector('#b_del').onclick=()=>{if(confirm('Xoá công việc này?')){setF(t,'deleted',true);save();close();render();toast('Đã xoá')}};
-    m.querySelector('#b_save').onclick=()=>{
-      const v=k=>m.querySelector('#m_'+k).value;
-      const vals={title:v('title').trim(),staff:v('staff'),assigner:v('asg'),start:v('start'),due:v('due'),done:v('done'),quality:v('q'),note:v('note').trim()};
+    const q=s=>m.querySelector(s);
+    q('#b_today').onclick=()=>{q('#m_done').value=today()};
+    q('#b_clr').onclick=()=>{q('#m_done').value=''};
+    q('#b_cancel').onclick=close;
+    if(canExt)q('#b_ext').onclick=()=>{
+      q('#extBox').innerHTML=`<div class="ext"><div class="grid2"><label>Hạn mới<input type="date" id="x_due" value="${addDays(g('due'),7)}"></label><label>Lý do<input id="x_why" placeholder="VD: chờ số liệu cấp trên"></label></div>
+      <div class="bar" style="margin:0"><button class="btn sm pri" type="button" id="x_ok">Xác nhận gia hạn</button><span class="mut">${db.settings.origDue?'KPI vẫn tính theo hạn gốc.':'KPI sẽ tính theo hạn mới.'}</span></div></div>`;
+      q('#x_ok').onclick=()=>{
+        const nd=q('#x_due').value,why=q('#x_why').value.trim(),od=g('due');
+        if(!nd||nd===od){toast('Chọn hạn mới khác hạn hiện tại');return}
+        if(!why){toast('Nhập lý do gia hạn');return}
+        if(!V(t,'dueOrig'))setF(t,'dueOrig',od);
+        setF(t,'due',nd);
+        setF(t,'extLog',(V(t,'extLog')?V(t,'extLog')+'\n':'')+`${fmtD(today())}: ${fmtD(od)} → ${fmtD(nd)} – ${why} (${db.me.name})`);
+        save();close();render();openTask(id);toast('Đã gia hạn');
+      };
+    };
+    if(t)q('#b_del').onclick=()=>{if(confirm('Xoá công việc này?')){setF(t,'deleted',true);save();close();render();toast('Đã xoá')}};
+    q('#b_save').onclick=()=>{
+      const v=k=>q('#m_'+k).value;
+      const vals={title:v('title').trim(),staff:v('staff'),assigner:v('asg'),repeat:v('rep'),start:v('start'),done:v('done'),quality:v('q'),note:v('note').trim()};
+      if(!g('dueOrig'))vals.due=v('due');
       if(!vals.title){toast('Nhập nội dung công việc');return}
+      if(vals.repeat&&!(vals.due||g('due'))){toast('Việc lặp lại cần có hạn hoàn thành');return}
       if(vals.due&&vals.start&&vals.due<vals.start&&!confirm('Hạn hoàn thành đang trước ngày giao. Vẫn lưu?'))return;
-      if(t){for(const k in vals)setF(t,k,vals[k])}else{const r=mk({...vals,deleted:false});db.tasks[r.id]=r}
+      let rec=t;
+      if(t){for(const k in vals)setF(t,k,vals[k])}else{rec=mk({...vals,deleted:false});db.tasks[rec.id]=rec}
+      if(vals.done)afterDone(rec);
       save();close();render();toast('Đã lưu');
     };
-    if(!t)setTimeout(()=>m.querySelector('#m_title').focus(),50);
+    if(!t)setTimeout(()=>q('#m_title').focus(),50);
   });
 }
 
-/* ================== TAB NHÂN SỰ ================== */
+/* ================== TAB NHÂN SỰ & HỒ SƠ ================== */
 function renderStaff(){
-  const tree=staffTree(),cnt={};
-  live(db.tasks).forEach(t=>{if(V(t,'done'))return;const s=canon(V(t,'staff'));const c=cnt[s]||(cnt[s]={o:0,x:0});c.o++;if(status(t).k==='overdue')c.x++});
+  const tree=staffTree(),cnt={},td=today();
+  live(db.tasks).forEach(t=>{if(V(t,'done'))return;const s=canon(V(t,'staff'));const c=cnt[s]||(cnt[s]={o:0,x:0});c.o++;if(V(t,'due')&&V(t,'due')<td)c.x++});
   $('#main').innerHTML=`<div class="bar"><button class="btn pri" onclick="openStaff()">＋ Thêm nhân viên</button><button class="btn" onclick="bulkStaff()">Thêm hàng loạt</button><span class="sp"></span><span class="mut">${tree.length} người</span></div>
-  ${tree.length?tree.map(({r,lv})=>{const c=cnt[r.id]||{o:0,x:0};return `<div class="card" style="margin-left:${Math.min(lv,4)*18}px">
-    <div class="staff-row" onclick="openStaff('${r.id}')"><div class="sp"><div class="nm">${lv?'↳ ':''}${esc(V(r,'name'))}</div><div class="mut">${esc(V(r,'pos')||'—')}${V(r,'unit')?' · '+esc(V(r,'unit')):''}</div></div>
-    ${c.x?`<span class="badge b-overdue">Quá hạn ${c.x}</span>`:''}<span class="badge b-doing">Đang làm ${c.o}</span></div>
-    <div class="bar" style="margin:8px 0 0"><button class="btn sm" onclick="ui.staff='${r.id}';ui.st='all';go('tasks')">Xem việc</button><button class="btn sm" onclick="openTask();setTimeout(()=>{const s=document.querySelector('#m_staff');if(s)s.value='${r.id}'},0)">＋ Giao việc</button></div></div>`}).join('')
+  ${tree.length?tree.map(({r,lv})=>{const c=cnt[r.id]||{o:0,x:0};return `<div class="card" style="margin-left:${Math.min(lv,4)*16}px">
+    <div class="staff-row" onclick="openProfile('${r.id}')"><div class="av">${esc(initials(V(r,'name')))}</div><div class="sp" style="min-width:0"><div class="nm">${esc(V(r,'name'))}</div><div class="mut">${esc(V(r,'pos')||'—')}${V(r,'unit')?' · '+esc(V(r,'unit')):''}</div></div>
+    ${c.x?`<span class="badge b-overdue">Quá hạn ${c.x}</span>`:''}${c.o?`<span class="badge b-doing">Đang làm ${c.o}</span>`:''}</div></div>`}).join('')
   :'<div class="empty">Chưa có nhân viên nào. Bấm "Thêm nhân viên" để bắt đầu.</div>'}`;
+}
+function openProfile(sid){
+  const s=db.staff[canon(sid)];if(!s)return;sid=s.id;
+  const all=live(db.tasks).filter(t=>canon(V(t,'staff'))===sid);
+  const kAll=computeKPI('0000-01-01','9999-12-31').find(r=>r.sid===sid)||fin({total:0,done:0,early:0,ontime:0,late:0,overdue:0,open:0,dev:0,devN:0,tot:0,dat:0,kem:0,sc:0,scN:0});
+  const par=staffOf(V(s,'parent')),subs=live(db.staff).filter(x=>canon(V(x,'parent'))===sid);
+  const recent=all.slice().sort((a,b)=>(V(b,'due')||V(b,'start')||'').localeCompare(V(a,'due')||V(a,'start')||'')).slice(0,10);
+  modal(`<div class="staff-row" style="cursor:default"><div class="av" style="width:46px;height:46px;font-size:17px">${esc(initials(V(s,'name')))}</div><div class="sp"><h2 style="margin:0">${esc(V(s,'name'))}</h2><div class="mut">${esc(V(s,'pos')||'—')}${V(s,'unit')?' · '+esc(V(s,'unit')):''}</div></div></div>
+    ${par||subs.length?`<div class="mut" style="margin-top:8px">${par?'Cấp trên: <b>'+esc(V(par,'name'))+'</b>':''}${par&&subs.length?' · ':''}${subs.length?'Cấp dưới: '+subs.map(x=>esc(V(x,'name'))).join(', '):''}</div>`:''}
+    <div class="kv"><div><b>${kAll.score===null?'—':Math.round(kAll.score)}</b><span>Điểm KPI</span></div><div><b>${kAll.onRate===null?'—':Math.round(kAll.onRate*100)+'%'}</b><span>Đúng hạn</span></div><div><b>${kAll.total}</b><span>Tổng việc</span></div><div><b style="color:${kAll.overdue?'var(--bad)':'var(--pri)'}">${kAll.overdue}</b><span>Quá hạn</span></div></div>
+    <div class="sec" style="margin-top:6px">KPI 6 tháng gần nhất</div>${trendSvg(kpiMonths(sid))}
+    <div class="sec">Công việc gần đây</div><div class="list">${recent.length?recent.map(t=>liTask(t)).join(''):'<div class="empty">Chưa có công việc</div>'}</div>
+    <div class="bar"><button class="btn pri" id="p_new">＋ Giao việc</button><button class="btn" id="p_edit">Sửa thông tin</button><button class="btn" id="p_all">Xem tất cả việc</button><span class="sp"></span><button class="btn" id="p_x">Đóng</button></div>`,
+  (m,close)=>{
+    m.querySelector('#p_new').onclick=()=>{close();openTask(null,sid)};
+    m.querySelector('#p_edit').onclick=()=>{close();openStaff(sid)};
+    m.querySelector('#p_all').onclick=()=>{close();ui.staff=sid;ui.st='all';go('tasks')};
+    m.querySelector('#p_x').onclick=close;
+    m.querySelectorAll('.li').forEach(el=>el.addEventListener('click',close,true));
+    m.querySelectorAll('.li .btn').forEach(el=>el.addEventListener('click',()=>setTimeout(()=>openProfile(sid),0)));
+  });
 }
 function openStaff(id){
   const s=id?db.staff[id]:null,g=k=>s?V(s,k):'',par=canon(g('parent'));
@@ -522,27 +796,36 @@ function setPeriod(p){kpiP=periodPreset(p);render()}
 function renderKPI(){
   if(!kpiP)kpiP=periodPreset('m');
   const rows=computeKPI(kpiP.from,kpiP.to),tot=sumKPI(rows),S=db.settings;
-  const name=r=>{if(r.sid==='_')return '<i>(Chưa giao người)</i>';const s=staffOf(r.sid);return s?esc(V(s,'name'))+(V(s,'deleted')?' <span class="mut">(đã xoá)</span>':''):'(?)'};
+  const name=r=>{if(r.sid==='_')return '<i>(Chưa giao người)</i>';const s=staffOf(r.sid);return s?`<a onclick="openProfile('${r.sid}')">${esc(V(s,'name'))}</a>`+(V(s,'deleted')?' <span class="mut">(đã xoá)</span>':''):'(?)'};
   const sc=r=>r.score===null?'—':`<span class="score">${Math.round(r.score)}</span> <span class="mut">${rank(r.score)}</span>`;
   const dev=r=>r.avgDev===null?'—':(r.avgDev>0?'+':'')+r1(r.avgDev);
   const line=(r,n)=>`<tr class="${r.sid==='ALL'?'tot':''}"><td>${n}</td><td>${r.total}</td><td>${r.done}</td><td>${r.early}</td><td>${r.ontime}</td><td>${r.late}</td><td>${r.overdue}</td><td>${r.open}</td><td>${r.onRate===null?'—':Math.round(r.onRate*100)+'%'}</td><td>${dev(r)}</td><td>${r.tot}/${r.dat}/${r.kem}</td><td>${sc(r)}</td></tr>`;
+  const tree=staffTree();if(ui.trend&&!db.staff[ui.trend])ui.trend='';
   $('#main').innerHTML=`
   <div class="chips">${[['m','Tháng này'],['pm','Tháng trước'],['q','Quý này'],['y','Năm nay']].map(([k,l])=>`<button class="chip ${kpiP.p===k?'on':''}" onclick="setPeriod('${k}')">${l}</button>`).join('')}</div>
   <div class="grid2"><label>Từ ngày<input type="date" id="k_from" value="${kpiP.from}"></label><label>Đến ngày<input type="date" id="k_to" value="${kpiP.to}"></label></div>
-  <div class="bar"><span class="mut">Tính theo hạn hoàn thành nằm trong khoảng</span><span class="sp"></span><button class="btn" onclick="exportKpiXlsx()">⬇ Xuất Excel</button></div>
+  <div class="bar" style="margin-top:0"><span class="mut">Tính theo ${S.origDue?'hạn gốc':'hạn hiện tại'} nằm trong khoảng</span><span class="sp"></span><button class="btn" onclick="exportKpiXlsx()">⬇ Xuất Excel</button></div>
+  <div class="sec">Kết quả theo từng người</div>
+  <div class="card">${stackBars(rows)}</div>
+  <div class="sec">Xu hướng điểm KPI 6 tháng<span class="sp"></span></div>
+  <div class="card"><select id="k_tr" style="margin-bottom:8px"><option value="">Toàn đơn vị</option>${tree.map(({r,lv})=>`<option value="${r.id}" ${ui.trend===r.id?'selected':''}>${'— '.repeat(lv)}${esc(V(r,'name'))}</option>`).join('')}</select>
+    ${trendSvg(kpiMonths(ui.trend))}<div class="mut">Đường nét đứt: mốc 75 (Tốt) và 90 (Xuất sắc).</div></div>
+  <div class="sec">Bảng tổng hợp</div>
   ${rows.length?`<div class="tw"><table><thead><tr><th>Nhân viên</th><th>Tổng</th><th>Xong</th><th>Sớm</th><th>Đúng hạn</th><th>Trễ</th><th>Quá hạn</th><th>Đang làm</th><th>Tỷ lệ đúng hạn</th><th>Lệch TB (ngày)</th><th>Tốt/Đạt/Kém</th><th>Điểm KPI</th></tr></thead>
   <tbody>${rows.map(r=>line(r,name(r))).join('')}${line(tot,'TỔNG CỘNG')}</tbody></table></div>`:'<div class="empty">Không có công việc nào trong khoảng thời gian này.</div>'}
-  <div class="card mut" style="margin-top:12px"><b>Cách tính điểm:</b> mỗi việc đã xong đúng hoặc sớm hạn được 100 điểm, trễ mỗi ngày trừ ${S.latePenalty} điểm. Sau đó nhân hệ số đánh giá: Tốt ${S.qTot}%, Đạt ${S.qDat}%, Kém ${S.qKem}% (chưa đánh giá thì giữ nguyên). Việc quá hạn mà chưa xong được 0 điểm; việc chưa đến hạn không tính. Điểm KPI là điểm trung bình các việc.<br>Xếp loại: ≥90 Xuất sắc · ≥75 Tốt · ≥50 Đạt · &lt;50 Chưa đạt. "Lệch TB": số âm là xong sớm, số dương là xong trễ. Thay đổi hệ số ở tab Cài đặt.</div>`;
+  <div class="card soft mut" style="margin-top:12px"><b>Cách tính điểm:</b> mỗi việc đã xong đúng hoặc sớm hạn được 100 điểm, trễ mỗi ngày trừ ${S.latePenalty} điểm. Sau đó nhân hệ số đánh giá: Tốt ${S.qTot}%, Đạt ${S.qDat}%, Kém ${S.qKem}% (chưa đánh giá thì giữ nguyên). Việc quá hạn mà chưa xong được 0 điểm; việc chưa đến hạn không tính. ${S.origDue?'Việc đã gia hạn vẫn tính theo <b>hạn gốc</b>.':'Việc đã gia hạn tính theo <b>hạn mới</b>.'}<br>Xếp loại: ≥90 Xuất sắc · ≥75 Tốt · ≥50 Đạt · &lt;50 Chưa đạt. Thay đổi hệ số trong Cài đặt (biểu tượng bánh răng).</div>`;
   const upd=()=>{const f=$('#k_from').value,t=$('#k_to').value;if(f&&t){kpiP={from:f,to:t,p:''};render()}};
   $('#k_from').onchange=upd;$('#k_to').onchange=upd;
+  $('#k_tr').onchange=e=>{ui.trend=e.target.value;render()};
 }
 
 /* ================== TAB ĐỒNG BỘ ================== */
-const FL={title:'Nội dung',staff:'Người thực hiện',assigner:'Người giao',start:'Ngày giao',due:'Hạn hoàn thành',done:'Ngày hoàn thành',quality:'Đánh giá',note:'Ghi chú',deleted:'Trạng thái xoá',name:'Họ tên',pos:'Chức danh',unit:'Đơn vị',parent:'Cấp trên'};
+const FL={title:'Nội dung',staff:'Người thực hiện',assigner:'Người giao',start:'Ngày giao',due:'Hạn hoàn thành',dueOrig:'Hạn gốc',extLog:'Lịch sử gia hạn',repeat:'Lặp lại',spawned:'Đã tạo kỳ sau',done:'Ngày hoàn thành',quality:'Đánh giá',note:'Ghi chú',deleted:'Trạng thái xoá',name:'Họ tên',pos:'Chức danh',unit:'Đơn vị',parent:'Cấp trên'};
 function fmtVal(k,v,w){
-  if(k==='deleted')return v?'Đã xoá':'Còn';
+  if(k==='deleted'||k==='spawned')return v?'Có':'Không';
   if(v===''||v===undefined||v===null)return '(trống)';
-  if(['start','due','done'].includes(k))return fmtD(v);
+  if(['start','due','done','dueOrig'].includes(k))return fmtD(v);
+  if(k==='repeat')return REP[v]||v;
   if(k==='staff'||k==='parent'){const s=w.staff[canon(v,w.aliases)];return s?V(s,'name'):'(?)'}
   return String(v);
 }
@@ -553,13 +836,16 @@ function renderSync(){
     <div>Mã dữ liệu: <span class="code">${dataHash()}</span></div>
     <div class="mut">${live(db.staff).length} nhân viên · ${live(db.tasks).length} công việc · Lần xuất file gần nhất: ${db.lastExport?fmtT(db.lastExport):'chưa có'}</div>
     <div class="mut">Hai máy có cùng mã dữ liệu nghĩa là dữ liệu đã giống hệt nhau.</div></div>
-  <div class="card"><h3>① Xuất file tổng hợp</h3><p class="mut">Gửi file này cho người kia qua Zalo, Telegram hoặc USB. File này cũng là bản sao lưu của bạn.</p>
-    <div class="bar">${navigator.share?'<button class="btn pri" onclick="exportSync(true)">📤 Chia sẻ (Zalo…)</button>':''}<button class="btn ${navigator.share?'':'pri'}" onclick="exportSync(false)">⬇ Tải file về máy</button></div></div>
-  <div class="card"><h3>② Nhập & gộp file của người kia</h3><input type="file" id="imp" accept=".json,application/json"><div id="preview" style="margin-top:10px"></div></div>
-  <div class="card"><h3>Lịch sử</h3>${peers?`<div class="mut">Đã nhận dữ liệu của:</div><ul class="mut">${peers}</ul>`:'<div class="mut">Chưa gộp lần nào.</div>'}
+  <div class="sec">① Xuất file tổng hợp</div>
+  <div class="card"><p class="mut" style="margin-top:0">Gửi file này cho người kia qua Zalo, Telegram hoặc USB. File này cũng là bản sao lưu của bạn.</p>
+    <div class="bar" style="margin-bottom:0">${navigator.share?'<button class="btn pri" onclick="exportSync(true)">Chia sẻ (Zalo…)</button>':''}<button class="btn ${navigator.share?'':'pri'}" onclick="exportSync(false)">⬇ Tải file về máy</button></div></div>
+  <div class="sec">② Nhập & gộp file của người kia</div>
+  <div class="card"><input type="file" id="imp" accept=".json,application/json"><div id="preview" style="margin-top:10px"></div></div>
+  <div class="sec">Lịch sử</div>
+  <div class="card">${peers?`<div class="mut">Đã nhận dữ liệu của:</div><ul class="mut">${peers}</ul>`:'<div class="mut">Chưa gộp lần nào.</div>'}
     ${(db.log||[]).slice(0,5).map(l=>`<div class="mut">• ${fmtT(l.at)}: gộp file của ${esc(l.name)} (+${l.st.nt} việc, cập nhật ${l.st.ut}; xung đột ${l.cf})</div>`).join('')}
-    <div class="bar"><button class="btn" onclick="undoMerge()">↶ Hoàn tác lần gộp gần nhất</button></div></div>
-  <div class="card help"><h3>Quy trình gộp giữa 2 người</h3><ol class="mut">
+    <div class="bar" style="margin-bottom:0"><button class="btn" onclick="undoMerge()">↶ Hoàn tác lần gộp gần nhất</button></div></div>
+  <div class="card soft help"><h3>Quy trình gộp giữa 2 người</h3><ol class="mut">
     <li>Cả A và B cùng bấm <b>Xuất file tổng hợp</b> rồi gửi cho nhau.</li>
     <li>Mỗi người <b>nhập file của người kia</b>, xem tóm tắt, chọn bản giữ lại nếu có xung đột, rồi bấm <b>Xác nhận gộp</b>.</li>
     <li>Đối chiếu <b>mã dữ liệu</b> hai máy. Nếu khác nhau (thường do chọn xung đột khác nhau), một người xuất lại file và người kia gộp thêm lần nữa.</li>
@@ -596,29 +882,42 @@ function undoMerge(){
   db=JSON.parse(u);save();try{localStorage.removeItem(KU)}catch(e){}render();toast('Đã hoàn tác');
 }
 
-/* ================== TAB CÀI ĐẶT ================== */
+/* ================== CÀI ĐẶT ================== */
+function setLook(k,v){db.settings[k]=v;save();render()}
 function renderSet(){
   const S=db.settings;
+  const seg=(k,opts)=>`<div class="seg">${opts.map(([v,l])=>`<button class="${(S[k]||'')===v?'on':''}" onclick="setLook('${k}','${v}')">${l}</button>`).join('')}</div>`;
   $('#main').innerHTML=`
-  <div class="card"><h3>Tên hiển thị</h3><label>Tên của bạn trên máy này<input id="c_name" value="${esc(db.me.name)}"></label><button class="btn pri" onclick="saveName()">Lưu tên</button></div>
-  <div class="card"><h3>Hệ số tính KPI</h3>
+  <div class="sec">Giao diện</div>
+  <div class="card">
+    <label>Tên đơn vị (hiện ở đầu trang)<div class="inl"><input id="c_title" value="${esc(S.appTitle)}"><button class="btn sm" onclick="saveTitle()">Lưu</button></div></label>
+    <div class="mut" style="margin-bottom:6px">Chế độ màu</div>${seg('theme',[['','Tự động'],['light','Sáng'],['dark','Tối']])}
+    <div class="mut" style="margin:12px 0 6px">Cỡ chữ</div>${seg('font',[['','Thường'],['large','Lớn']])}
+  </div>
+  <div class="sec">Tài khoản trên máy này</div>
+  <div class="card"><label>Tên của bạn<div class="inl"><input id="c_name" value="${esc(db.me.name)}"><button class="btn sm" onclick="saveName()">Lưu</button></div></label></div>
+  <div class="sec">Cách tính KPI</div>
+  <div class="card">
+    <label class="chk" style="margin-bottom:12px"><input type="checkbox" id="c_orig" ${S.origDue?'checked':''}> <span>Việc đã gia hạn vẫn tính KPI theo <b>hạn gốc</b> <span class="mut">(bỏ chọn để tính theo hạn mới)</span></span></label>
     <label>Trừ điểm cho mỗi ngày trễ<input type="number" id="c_lp" value="${S.latePenalty}" min="0" max="100"></label>
     <div class="grid2"><label>Hệ số "Tốt" (%)<input type="number" id="c_qt" value="${S.qTot}"></label><label>Hệ số "Đạt" (%)<input type="number" id="c_qd" value="${S.qDat}"></label></div>
     <label>Hệ số "Kém" (%)<input type="number" id="c_qk" value="${S.qKem}"></label>
-    <div class="mut" style="margin-bottom:8px">Hệ số chỉ áp dụng trên máy này. Hai chỉ huy nên đặt giống nhau để điểm KPI khớp.</div>
-    <button class="btn pri" onclick="saveKpiSet()">Lưu hệ số</button></div>
-  <div class="card"><h3>Sao lưu & khôi phục</h3>
-    <p class="mut">Dữ liệu nằm trong trình duyệt của máy này. Nếu xoá dữ liệu trình duyệt hoặc xoá ứng dụng thì sẽ mất, nên hãy xuất file định kỳ ở tab Đồng bộ.</p>
+    <div class="mut" style="margin-bottom:8px">Cài đặt chỉ áp dụng trên máy này. Hai chỉ huy nên đặt giống nhau để điểm KPI khớp.</div>
+    <button class="btn pri" onclick="saveKpiSet()">Lưu cách tính</button></div>
+  <div class="sec">Sao lưu & khôi phục</div>
+  <div class="card">
+    <p class="mut" style="margin-top:0">Dữ liệu nằm trong trình duyệt của máy này. Nếu xoá dữ liệu trình duyệt hoặc xoá ứng dụng thì sẽ mất, nên hãy xuất file định kỳ ở tab Đồng bộ.</p>
     <label>Khôi phục từ file (thay thế toàn bộ dữ liệu hiện tại)<input type="file" id="c_rest" accept=".json,application/json"></label>
     <button class="btn bad" onclick="wipe()">Xoá toàn bộ dữ liệu trên máy này</button></div>
-  <div class="card mut">Theo dõi công việc & KPI của BCHQS xã An Phú</div>`;
+  <div class="mut" style="text-align:center;margin:14px 0">Chạy hoàn toàn offline · dữ liệu không gửi đi đâu</div>`;
   $('#c_rest').onchange=e=>readJson(e.target,f=>{
     const msg=f.me.id===db.me.id?'Khôi phục toàn bộ dữ liệu từ file sao lưu này? Dữ liệu hiện tại sẽ bị thay thế.':`File này là của "${f.me.name}", không phải của máy này. Khôi phục sẽ biến máy này thành "${f.me.name}". Bạn chắc chắn chứ? (Muốn gộp dữ liệu thì dùng tab Đồng bộ.)`;
     if(confirm(msg)){try{localStorage.setItem(KU,JSON.stringify(db))}catch(x){}restoreFrom(f);render();toast('Đã khôi phục')}
   });
 }
+function saveTitle(){db.settings.appTitle=$('#c_title').value.trim();save();render();toast('Đã lưu')}
 function saveName(){const n=$('#c_name').value.trim();if(!n)return;db.me.name=n;db.peers[db.me.id]=n;save();render();toast('Đã lưu tên')}
-function saveKpiSet(){const g=id=>Math.max(0,Number($(id).value)||0);db.settings={latePenalty:g('#c_lp'),qTot:g('#c_qt'),qDat:g('#c_qd'),qKem:g('#c_qk')};save();toast('Đã lưu hệ số')}
+function saveKpiSet(){const g=id=>Math.max(0,Number($(id).value)||0);Object.assign(db.settings,{latePenalty:g('#c_lp'),qTot:g('#c_qt'),qDat:g('#c_qd'),qKem:g('#c_qk'),origDue:$('#c_orig').checked});save();render();toast('Đã lưu cách tính')}
 function wipe(){if(confirm('Xoá TOÀN BỘ dữ liệu trên máy này?')&&confirm('Chắc chắn? Thao tác không thể hoàn tác nếu bạn chưa xuất file.')){try{localStorage.removeItem(K);localStorage.removeItem(KU)}catch(e){}db=null;render()}}
 
 /* ================== CHẠY ================== */
@@ -627,6 +926,11 @@ if(typeof document!=='undefined'&&document.getElementById('main')){
   if(db){db.settings=Object.assign(defSettings(),db.settings||{});db.aliases=db.aliases||{};db.lastImportFrom=db.lastImportFrom||{};db.peers=db.peers||{}}
   try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
   render();
+  if('serviceWorker' in navigator&&location.protocol.startsWith('http')){
+    navigator.serviceWorker.register('sw.js').then(reg=>{
+      reg.addEventListener('updatefound',()=>{const w=reg.installing;w&&w.addEventListener('statechange',()=>{if(w.state==='installed'&&navigator.serviceWorker.controller)toast('Đã có bản cập nhật mới. Đóng hẳn app rồi mở lại để dùng bản mới.',6000)})});
+    }).catch(()=>{});
+  }
 }
 </script>
 </body>
